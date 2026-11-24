@@ -228,7 +228,10 @@ $accents: (
     @include cell;
     text-align: left !important;
     @include sticky-cell;
-    border-bottom-color: man("border-strong") !important;
+    // Wie die Spaltenköpfe: durchgehend die dicke Linie, ohne graue Fläche –
+    // aber deckend, damit beim Scrollen nichts durchscheint.
+    background: var(--cmp-surface) !important;
+    border-bottom: man("border-width-strong") solid man("border-strong") !important;
   }
 }
 
