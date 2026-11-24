@@ -22,7 +22,7 @@ Unter jeder aufgeklappten Dimension: nach oben/unten schieben, **duplizieren** (
 | --- | --- |
 | Name | Steht über der Spalte. Pflicht. |
 | Untertitel | Optional, eine Zeile unter dem Namen. |
-| Werte | Je Dimension ein Feld passend zum Typ. Leer heißt „keine Angabe“ und erscheint als „–“. |
+| Werte | Je Dimension ein Feld passend zum Typ. Leer heißt „keine Angabe“ und erscheint als „–“. Auf der Seite stehen die Werte mittig in ihrer Spalte. |
 
 Höchstens 12 Elemente, 60 Dimensionen und 20 Bilder je Galerie. Bilder einer Galerie werden nie beschnitten: Die Höhe der Galerie-Zeile richtet sich nach dem höchsten Bild aller Elemente.
 

@@ -203,7 +203,7 @@ $accents: (
   font-size: 16px !important;
   line-height: 1.5 !important;
   color: var(--cmp-cell-color, #{man("text")}) !important;
-  text-align: left !important;
+  text-align: var(--cmp-cell-align, center) !important;
   vertical-align: var(--cmp-cell-valign, top) !important;
   overflow-wrap: anywhere;
   background: var(--cmp-surface) !important;
@@ -226,6 +226,7 @@ $accents: (
 .man-cmp__corner {
   @include man-outshine-host {
     @include cell;
+    text-align: left !important;
     @include sticky-cell;
     border-bottom-color: man("border-strong") !important;
   }
@@ -243,6 +244,8 @@ $accents: (
 .man-cmp__dim {
   @include man-outshine-host {
     @include cell;
+    // Die Merkmale stehen links; Werte und Spaltenköpfe mittig in ihrer Spalte.
+    text-align: left !important;
     @include sticky-cell;
     font-weight: 700 !important;
     color: man("text") !important;
@@ -314,8 +317,11 @@ $accents: (
       color: inherit !important;
     }
 
+    // Aufzählungen als Block mittig, ihre Punkte bündig.
     ul {
+      display: inline-block !important;
       padding-left: 1.25em !important;
+      text-align: left !important;
       list-style: disc !important;
     }
 
@@ -375,6 +381,9 @@ $accents: (
 
 .man-cmp__list {
   @include man-outshine-host {
+    // Als Block mittig in der Zelle, die Punkte darin bündig untereinander.
+    display: inline-block !important;
+    text-align: left !important;
     padding: 0 !important;
     margin: 0 !important;
     list-style: none !important;
@@ -440,7 +449,7 @@ $accents: (
   display: block;
   width: fit-content;
   padding: 0 6px;
-  margin-top: man("space-1");
+  margin: man("space-1") auto 0;
   font-size: 12px;
   font-weight: 700;
   line-height: 20px;

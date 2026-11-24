@@ -82,6 +82,12 @@ describe("ComparisonTable", () => {
     expect((mark as HTMLElement).style.getPropertyValue("--cmp-bool-color")).toBe("#2d6300");
   });
 
+  it("zentriert Werte, nur die Merkmale stehen links", () => {
+    const { container } = render(<ComparisonTable config={sampleConfig()} />);
+    const css = container.querySelector("style")!.textContent ?? "";
+    expect(css).toContain("text-align: var(--cmp-cell-align, center) !important");
+  });
+
   it("blendet gleiche Zeilen ab, nie die Galerie", () => {
     render(<ComparisonTable config={sampleConfig()} />);
     expect(rowOf("Klimaanlage")).toHaveClass("man-cmp__row--same");
