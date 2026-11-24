@@ -28,6 +28,6 @@
 
 ## Si algo no funciona
 
-1. No es posible hacer clic en **Aplicar** y aparece un error: cada elemento y cada dimensión deben tener un nombre; cada selección debe tener al menos una opción con nombre. Las entradas afectadas aparecen marcadas en rojo.
+1. No es posible hacer clic en **Aplicar** y aparece un error: cada elemento y cada dimensión necesita un nombre; cada selección, al menos una opción con nombre. Las entradas afectadas aparecen marcadas en rojo.
 2. La tabla no aparece en la página: se necesita al menos un elemento y una dimensión con al menos un valor.
 3. Si en lugar de la ventana de edición solo aparece un campo de texto, actualiza Studio. El campo de texto contiene la comparación en forma de texto; modifícalo solo si sabes lo que estás haciendo.

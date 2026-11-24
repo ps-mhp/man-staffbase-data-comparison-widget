@@ -2,7 +2,7 @@
 
 **Pytanie:** „Element 1: brakuje nazwy” – co mam zrobić?
 
-Odpowiedź: Każdy element musi mieć nazwę, ponieważ znajduje się nad swoją kolumną. Wybierz element po lewej stronie i wpisz coś w środkowej części w polu **Nazwa**.
+Odpowiedź: Każdy element musi mieć nazwę, ponieważ znajduje się nad swoją kolumną. Zaznacz element po lewej stronie i wpisz coś w środkowej części w polu **Nazwa**.
 
 **Pytanie:** „Wymiar 2: brak nazwy” – co mam zrobić?
 

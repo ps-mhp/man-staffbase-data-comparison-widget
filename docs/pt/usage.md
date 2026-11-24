@@ -17,13 +17,13 @@
 2. Selecione um elemento à esquerda. No centro da galeria, aparece o botão **Adicionar imagem**.
 3. Clique nesse botão e selecione uma imagem da biblioteca multimédia – ou arraste uma imagem da barra da biblioteca multimédia aberta para o campo.
 4. Introduza uma **descrição da imagem** para cada imagem; esta será lida em voz alta e exibida como legenda na visualização ampliada.
-5. Altere a ordem das imagens com as setas e elimine imagens com o caixote do lixo.
+5. Altere a ordem das imagens com as setas e elimine imagens com o cesto de lixo.
 
 ## Alterar posteriormente
 
 1. Abra novamente as definições do widget.
-2. Para alterar uma dimensão, expanda-a à direita. Se alterar o **tipo**, os valores existentes serão mantidos, na medida do possível (por exemplo, Texto ↔ Lista, Texto → Seleção). O que não se encaixar é eliminado – com **Anular**, pode reverter a alteração.
-3. Se eliminar uma dimensão, os seus valores desaparecem em todos os elementos.
+2. Para alterar uma dimensão, expanda-a à direita. Se alterar o **tipo**, os valores existentes serão mantidos, na medida do possível (por exemplo, Texto ↔ Lista, Texto → Seleção). O que não se encaixar será omitido – com **Anular**, pode reverter a alteração.
+3. Se eliminar uma dimensão, os seus valores desaparecerão em todos os elementos.
 4. Clique em **Aplicar** e guarde a página.
 
 ## Se algo não funcionar

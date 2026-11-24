@@ -8,14 +8,14 @@
 | Tipo | **Texto** (texto livre, mantém as quebras de linha), **Número** (com unidade, valor máximo opcional), **Sim/Não** (caixa de seleção ou cruz), **Lista** (uma entrada por linha, como enumeração), **Seleção** (um valor entre opções fixas), **Avaliação** (1–5 estrelas), **Galeria** (imagens para percorrer e ampliar, não compara nada). Predefinição: Texto. |
 | Explicação | Opcional, aparece em letras pequenas abaixo do nome. |
 | Unidade | Apenas para números. Aparece após cada número, por exemplo, «PS» ou «%». |
-| Valor ideal | Apenas para números: **Neutro** (sem marcação), **Quanto maior, melhor** ou **Quanto menor, melhor**. Padrão: Neutro. As avaliações são sempre consideradas como «quanto maior, melhor». |
-| Opções | Apenas para seleção. Os valores entre os quais cada elemento escolhe um. Pelo menos um. |
+| Valor ideal | Apenas para números: **Neutro** (sem marcação), **Quanto maior, melhor** ou **Quanto menor, melhor**. Predefinição: Neutro. As avaliações são sempre consideradas como «quanto maior, melhor». |
+| Opções | Apenas para seleção. Os valores entre os quais cada elemento seleciona um. Pelo menos um. |
 | Ícone antes do nome | Opcional, um ícone da biblioteca de ícones antes do nome da dimensão. |
 | Símbolo para Sim / Não | Apenas para Sim/Não. Ícone da biblioteca de ícones; predefinição: marca de verificação e cruz. |
-| Cor para Sim / Não | Apenas para Sim/Não. Uma cor MAN-CI, de estado ou personalizada; predefinição: cor de destaque para Sim e cinzento para Não. |
-| Tamanho dos símbolos | Apenas para Sim/Não. **Pequeno** (16 × 16 px), **Normal** (20 × 20 px) ou **Grande** (24 × 24 px). Padrão: Normal. |
+| Cor para Sim / Não | Apenas para Sim/Não. Uma cor MAN-CI, de estado ou personalizada; predefinição: cor de destaque para Sim e cinzento para Não. A cor selecionada mantém-se mesmo em linhas esbatidas. |
+| Tamanho dos símbolos | Apenas para Sim/Não. **Pequeno** (8 × 8 px), **Normal** (10 × 10 px) ou **Grande** (12 × 12 px). Padrão: Normal. |
 
-Em cada dimensão expandida: deslocar para cima/baixo, **duplicar** (a cópia herda o tipo, as definições e todos os valores e fica imediatamente a seguir) e eliminar.
+Em cada dimensão expandida: deslocar para cima/para baixo, **duplicar** (a cópia herda o tipo, as definições e todos os valores e fica imediatamente a seguir) e eliminar.
 
 ## Elementos (à esquerda e ao centro)
 

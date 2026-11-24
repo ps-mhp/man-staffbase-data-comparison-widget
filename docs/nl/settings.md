@@ -9,11 +9,11 @@
 | Toelichting | Optioneel, staat in kleine letters onder de naam. |
 | Eenheid | Alleen bij getal. Staat achter elk getal, bijv. „PS“ of „%“. |
 | Beste waarde | Alleen bij getallen: **Neutraal** (geen markering), **Hoger is beter** of **Lager is beter**. Standaard: Neutraal. Beoordelingen gelden altijd als „hoger is beter“. |
-| Opties | Alleen bij keuzelijst. De waarden waaruit elk element een keuze maakt. Minimaal één. |
+| Opties | Alleen bij selectie. De waarden waaruit elk element er één kiest. Minimaal één. |
 | Pictogram voor de naam | Optioneel, een pictogram uit de pictogrambibliotheek voor de naam van de dimensie. |
-| Symbool voor Ja / Nee | Alleen bij Ja/Nee. Pictogram uit de pictogrambibliotheek; standaard vinkje en kruisje. |
-| Kleur voor Ja / Nee | Alleen bij Ja/Nee. Een MAN-CI-, status- of eigen kleur; standaard accentkleur voor Ja en grijs voor Nee. |
-| Grootte van de tekens | Alleen bij Ja/Nee. **Kleiner** (16 × 16 px), **Normaal** (20 × 20 px) of **Groter** (24 × 24 px). Standaard: Normaal. |
+| Symbool voor Ja / Nee | Alleen bij Ja/Nee. Pictogram uit de pictogrambibliotheek; standaard een vinkje en een kruisje. |
+| Kleur voor Ja / Nee | Alleen bij Ja/Nee. Een MAN-CI-, status- of eigen kleur; standaard accentkleur voor Ja en grijs voor Nee. Een gekozen kleur blijft ook in vervaagde rijen behouden. |
+| Grootte van de tekens | Alleen bij Ja/Nee. **Kleiner** (8 × 8 px), **Normaal** (10 × 10 px) of **Groter** (12 × 12 px). Standaard: Normaal. |
 
 Onder elke uitgeklapte dimensie: naar boven/beneden verschuiven, **dupliceren** (de kopie neemt het type, de instellingen en alle waarden over en staat direct erachter) en verwijderen.
 
@@ -33,7 +33,7 @@ Maximaal 12 elementen, 60 dimensies en 20 afbeeldingen per galerij. Afbeeldingen
 | --- | --- |
 | Koptekst | Optioneel, staat boven de tabel. |
 | Accent | **Rood**, **antraciet** of **blauw** – kleur van de vinkjes, sterren, pictogrammen en beste waarden. Standaard: rood. |
-| Identieke rijen verbergen | Rijen waarin alle elementen dezelfde waarde hebben, worden grijs. „Geen gegevens“ telt als een aparte waarde. Galerijen worden nooit verborgen. Standaard: aan. |
+| Gelijke rijen verduisteren | Rijen waarin alle elementen dezelfde waarde hebben, worden grijs. „Geen gegevens“ telt als een aparte waarde. Galerijen worden nooit verborgen. Standaard: aan. |
 | Beste waarden markeren | Benadrukt de beste waarde bij getallen met voorkeur en bij beoordelingen. Als alle elementen dezelfde waarde hebben, wordt er niets gemarkeerd. Standaard: aan. |
 
 ## Gedrag (rechts, tabblad „Gedrag“)

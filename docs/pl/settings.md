@@ -8,12 +8,12 @@
 | Typ | **Tekst** (tekst dowolny, zachowuje znaki końca linii), **Liczba** (z jednostką, opcjonalnie wartość maksymalna), **Tak/Nie** (haczyk lub krzyżyk), **Lista** (jedna pozycja w każdym wierszu, w formie wypunktowania), **Wybór** (jedna wartość spośród stałych opcji), **Ocena** (1–5 gwiazdek), **Galeria** (zdjęcia do przeglądania i powiększania, nie porównuje niczego). Ustawienie domyślne: Tekst. |
 | Objaśnienie | Opcjonalne, umieszczone małą czcionką pod nazwą. |
 | Jednostka | Tylko w przypadku liczby. Umieszczona za każdą liczbą, np. „PS” lub „%”. |
-| Najlepsza wartość | Tylko w przypadku liczb: **Neutralna** (brak oznaczenia), **Im wyższa, tym lepsza** lub **Im niższa, tym lepsza**. Domyślnie: Neutralna. Oceny zawsze traktowane są jako „im wyższa, tym lepsza”. |
+| Najlepsza wartość | Tylko w przypadku liczby: **Neutralna** (brak oznaczenia), **Im wyższa, tym lepsza** lub **Im niższa, tym lepsza**. Domyślnie: Neutralna. Oceny zawsze traktowane są jako „im wyższa, tym lepsza”. |
 | Opcje | Tylko w przypadku wyboru. Wartości, spośród których każdy element wybiera jedną. Co najmniej jedna. |
 | Ikona przed nazwą | Opcjonalnie, ikona z biblioteki ikon przed nazwą wymiaru. |
-| Symbole dla „Tak” / „Nie” | Tylko w przypadku „Tak”/„Nie”. Ikona z biblioteki ikon; domyślnie haczyk i krzyżyk. |
-| Kolor dla „Tak” / „Nie” | Tylko w przypadku „Tak”/„Nie”. Kolor z palety MAN-CI, kolor statusu lub własny; domyślnie kolor akcentujący dla „Tak” i szary dla „Nie”. |
-| Rozmiar znaków | Tylko w przypadku „Tak/Nie”. **Mniejszy** (16 × 16 px), **Normalny** (20 × 20 px) lub **Większy** (24 × 24 px). Domyślnie: Normalny. |
+| Symbol dla Tak / Nie | Tylko w przypadku Tak/Nie. Ikona z biblioteki ikon; domyślnie haczyk i krzyżyk. |
+| Kolor dla „Tak” / „Nie” | Tylko w przypadku „Tak”/„Nie”. Kolor z palety MAN-CI, kolor statusu lub własny; domyślnie kolor akcentujący dla „Tak” i szary dla „Nie”. Wybrany kolor pozostaje widoczny również w wygaszonych wierszach. |
+| Rozmiar znaków | Tylko w przypadku „Tak”/„Nie”. **Mniejszy** (8 × 8 px), **Normalny** (10 × 10 px) lub **Większy** (12 × 12 px). Domyślnie: Normalny. |
 
 Pod każdym rozwiniętym wymiarem: przesuń w górę/w dół, **duplikuj** (kopia przejmuje typ, ustawienia i wszystkie wartości oraz znajduje się bezpośrednio za nim) oraz usuń.
 
@@ -22,7 +22,7 @@ Pod każdym rozwiniętym wymiarem: przesuń w górę/w dół, **duplikuj** (kopi
 | Ustawienie | Opis |
 | --- | --- |
 | Nazwa | Znajduje się nad kolumną. Pole obowiązkowe. |
-| Podtytuł | Opcjonalny, jedna linia poniżej nazwy. |
+| Podtytuł | Opcjonalny, jeden wiersz poniżej nazwy. |
 | Wartości | Dla każdego wymiaru jedno pole dostosowane do typu. Puste pole oznacza „brak danych” i wyświetla się jako „–”. Na stronie wartości są wyśrodkowane w swoich kolumnach. |
 
 Maksymalnie 12 elementów, 60 wymiarów i 20 obrazów w każdej galerii. Obrazy w galerii nigdy nie są przycinane: wysokość wiersza galerii zależy od najwyższego obrazu spośród wszystkich elementów.

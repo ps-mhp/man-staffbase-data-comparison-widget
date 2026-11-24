@@ -4,12 +4,12 @@
 
 1. Trascinate il widget **Confronto dati** nella posizione desiderata della pagina. È preferibile che occupi l’intera larghezza dell’area dei contenuti: nelle colonne strette, infatti, si dovrà scorrere più spesso.
 2. Aprire le impostazioni del widget. Si aprirà la finestra **Modifica confronto**.
-3. A destra, sotto **Dimensioni**: clicca su **Nuova dimensione**, inserisci un **Nome** (ad es. «Prestazioni») e seleziona il **Tipo** (ad es. «Numero»). Per i numeri, inserite l’**unità** (ad es. «PS») e specificate in **Valore ottimale** se sono migliori i valori più alti o quelli più bassi.
+3. A destra, sotto **Dimensioni**: clicchi su **Nuova dimensione**, inserisca un **Nome** (ad es. «Prestazioni») e selezioni il **Tipo** (ad es. «Numero»). Per i numeri, inserite l’**unità** (ad es. «PS») e specificate in **Valore ottimale** se sono migliori i valori più alti o quelli più bassi.
 4. Ripetete il passaggio 3 per ogni caratteristica. L’ordine a destra corrisponde all’ordine delle righe; è possibile modificarla utilizzando le frecce sotto ogni dimensione espansa.
 5. A sinistra, sotto **Elementi**: cliccare su **Nuovo elemento** e inserire al centro il **nome** (che apparirà sopra la colonna), facoltativamente un **sottotitolo**.
 6. Al centro, sotto **Valori**, inserite per ogni dimensione il valore di questo elemento. I campi lasciati vuoti appariranno nella pagina come «–».
 7. Create gli altri elementi seguendo la stessa procedura. L’ordine a sinistra corrisponde all’ordine delle colonne; trascinate un elemento utilizzando la maniglia per spostarlo in un’altra posizione.
-8. Verificate il risultato tramite **Desktop** e **Mobile** nella parte superiore della finestra e cliccate su **Applica**. Successivamente salvate o pubblicate la pagina.
+8. Verificate il risultato tramite **Desktop** e **Mobile** nella parte superiore della finestra e cliccate su **Applica**. Salvate o pubblicate quindi la pagina.
 
 ## Aggiungere immagini (galleria)
 

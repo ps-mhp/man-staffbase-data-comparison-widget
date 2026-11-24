@@ -9,11 +9,11 @@
 | Explicación | Opcional, aparece en letra pequeña debajo del nombre. |
 | Unidad | Solo para números. Aparece detrás de cada número, p. ej., «CV» o «%». |
 | Valor óptimo | Solo para números: **Neutro** (sin marca), **Cuanto más alto, mejor** o **Cuanto más bajo, mejor**. Por defecto: Neutro. Las valoraciones siempre se consideran «cuanto más alto, mejor». |
-| Opciones | Solo para selecciones. Los valores entre los que cada elemento elige uno. Al menos uno. |
-| Icono delante del nombre | Opcional, un icono de la biblioteca de iconos delante del nombre de la dimensión. |
-| Símbolo para Sí / No | Solo en Sí/No. Icono de la biblioteca de iconos; por defecto, una marca de verificación y una cruz. |
-| Color para Sí / No | Solo en Sí/No. Un color MAN-CI, de estado o personalizado; por defecto, color de acento para Sí y gris para No. |
-| Tamaño de los símbolos | Solo en «Sí/No». **Pequeño** (16 × 16 px), **Normal** (20 × 20 px) o **Grande** (24 × 24 px). Por defecto: Normal. |
+| Opciones | Solo para selección. Los valores entre los que cada elemento permite elegir uno. Al menos uno. |
+| Icono delante del nombre | Opcional: un icono de la biblioteca de iconos delante del nombre de la dimensión. |
+| Símbolos para Sí / No | Solo para Sí/No. Icono de la biblioteca de iconos; por defecto, una marca de verificación y una cruz. |
+| Color para Sí / No | Solo en Sí/No. Un color MAN-CI, de estado o personalizado; por defecto, color de acento para Sí y gris para No. El color seleccionado se mantiene incluso en las filas atenuadas. |
+| Tamaño de los símbolos | Solo para Sí/No. **Pequeño** (8 × 8 px), **Normal** (10 × 10 px) o **Grande** (12 × 12 px). Por defecto: Normal. |
 
 Debajo de cada dimensión desplegada: desplazar hacia arriba/abajo, **duplicar** (la copia toma el tipo, la configuración y todos los valores, y se coloca justo detrás) y eliminar.
 

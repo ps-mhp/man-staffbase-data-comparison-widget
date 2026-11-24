@@ -26,7 +26,7 @@
 3. If you delete a dimension, its values will disappear from all elements.
 4. Click **Apply** and save the page.
 
-## If Something Doesn’t Work
+## If something isn’t working
 
 1. **Apply** is unavailable and displays an error: Every element and every dimension must have a name, and every selection must have at least one named option. The affected entries are highlighted in red.
 2. The table does not appear on the page: You need at least one element and one dimension with at least one value.

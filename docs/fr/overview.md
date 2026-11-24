@@ -1,6 +1,6 @@
 # Comparaison de données
 
-La comparaison de données met en parallèle plusieurs éléments – tels que des modèles de véhicules, des niveaux d’équipement ou des offres – et les compare à l’aide d’un ensemble de caractéristiques. Vous définissez une seule fois **ce qui** doit être comparé (les dimensions), puis vous saisissez les valeurs de chaque élément.
+La comparaison de données met en parallèle plusieurs éléments – tels que des modèles de véhicules, des niveaux d'équipement ou des offres – et les compare à l'aide d'un ensemble de caractéristiques. Vous définissez une seule fois **ce qui** doit être comparé (les dimensions), puis vous saisissez les valeurs de chaque élément.
 
 Chaque dimension possède un type : texte, nombre avec unité, oui/non, liste, sélection parmi des options fixes, évaluation par étoiles ou galerie. Le type détermine la manière dont la valeur est saisie et affichée.
 

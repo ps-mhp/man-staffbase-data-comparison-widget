@@ -1,4 +1,4 @@
-# Perguntas Frequentes
+# Perguntas frequentes
 
 **Pergunta:** «Elemento 1: falta o nome» – o que devo fazer?
 
@@ -18,11 +18,11 @@ Resposta: No campo numérico está algo que não é um número. São permitidos 
 
 **Pergunta:** Por que razão uma linha está a cinzento?
 
-Resposta: Todos os elementos nessa linha têm o mesmo valor. É possível desativar esta funcionalidade em **Formato → Ocultar linhas iguais**.
+Resposta: Todos os elementos têm aí o mesmo valor. É possível desativar esta funcionalidade em **Formato → Ocultar linhas iguais**.
 
 **Pergunta:** Por que razão nenhum valor máximo está marcado?
 
-Resposta: Os valores máximos só existem para números com **Valor máximo** «Quanto mais alto, melhor» ou «Quanto mais baixo, melhor» e em avaliações – e apenas se pelo menos dois elementos tiverem um valor e nem todos forem iguais. Além disso, a opção **Formato → Marcar valores máximos** tem de estar ativada.
+Resposta: Os valores máximos só existem para números com **Valor máximo** «Quanto mais alto, melhor» ou «Quanto mais baixo, melhor» e em avaliações — e apenas se pelo menos dois elementos tiverem um valor e nem todos forem iguais. Além disso, a opção **Formato → Marcar valores máximos** tem de estar ativada.
 
 **Pergunta:** Uma dimensão não aparece na página.
 

@@ -15,4 +15,4 @@ Una tabla: En la primera columna figuran las dimensiones; junto a cada una de el
 
 ## Lo que verá en el editor del CMS
 
-El cuadro de diálogo de configuración abre una gran ventana de edición: a la izquierda, los elementos; en el centro, los valores del elemento seleccionado; a la derecha, las dimensiones, así como el diseño y el comportamiento. Mediante las opciones **Ordenador**, **Tableta** y **Móvil**, situadas en la parte superior de la ventana, podrá ver la tabla tal y como aparecerá en la página.
+El cuadro de diálogo de configuración abre una gran ventana de edición: a la izquierda, los elementos; en el centro, los valores del elemento seleccionado; y a la derecha, las dimensiones, así como el diseño y el comportamiento. Mediante las opciones **Ordenador**, **Tableta** y **Móvil**, situadas en la parte superior de la ventana, podrá ver la tabla tal y como aparecerá en la página.

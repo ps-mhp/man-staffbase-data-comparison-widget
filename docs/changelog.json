@@ -1,6 +1,16 @@
 {
   "versions": [
     {
+      "version": "0.1.0-rc.3",
+      "date": "2026-11-24",
+      "entries": [
+        {
+          "type": "fix",
+          "text": "gewaehlte Ja/Nein-Farbe bleibt in gleichen Zeilen stehen"
+        }
+      ]
+    },
+    {
       "version": "0.1.0-rc.2",
       "date": "2026-11-24",
       "entries": [

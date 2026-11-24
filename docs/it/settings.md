@@ -9,13 +9,13 @@
 | Spiegazione | Facoltativa, appare in piccolo sotto il nome. |
 | Unità | Solo per i numeri. Appare dopo ogni numero, ad es. «PS» o «%». |
 | Valore ottimale | Solo per i numeri: **Neutro** (nessun contrassegno), **Più alto è meglio** o **Più basso è meglio**. Impostazione predefinita: Neutro. Le valutazioni sono sempre considerate «più alto è meglio». |
-| Opzioni | Solo per le voci a scelta. I valori tra cui ogni elemento ne seleziona uno. Almeno uno. |
+| Opzioni | Solo per la selezione. I valori tra cui ogni elemento ne seleziona uno. Almeno uno. |
 | Icona prima del nome | Opzionale, un’icona dalla libreria delle icone prima del nome della dimensione. |
 | Simbolo per Sì / No | Solo per Sì/No. Icona dalla libreria delle icone; impostazione predefinita: spunta e croce. |
-| Colore per Sì / No | Solo per Sì/No. Un colore MAN-CI, di stato o personalizzato; impostazione predefinita: colore di risalto per Sì e grigio per No. |
-| Dimensione dei simboli | Solo per Sì/No. **Piccolo** (16 × 16 px), **Normale** (20 × 20 px) o **Grande** (24 × 24 px). Impostazione predefinita: Normale. |
+| Colore per Sì / No | Solo per Sì/No. Un colore MAN-CI, di stato o personalizzato; impostazione predefinita: colore di risalto per Sì e grigio per No. Il colore selezionato rimane anche nelle righe oscurate. |
+| Dimensione dei simboli | Solo per Sì/No. **Piccolo** (8 × 8 px), **Normale** (10 × 10 px) o **Grande** (12 × 12 px). Impostazione predefinita: Normale. |
 
-Sotto ogni dimensione espansa: sposta verso l'alto/verso il basso, **duplica** (la copia riprende il tipo, le impostazioni e tutti i valori e viene posizionata direttamente dietro) ed elimina.
+Sotto ogni dimensione espansa: sposta verso l’alto/verso il basso, **duplica** (la copia riprende il tipo, le impostazioni e tutti i valori e viene posizionata direttamente dietro) ed elimina.
 
 ## Elementi (a sinistra e al centro)
 
