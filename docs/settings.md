@@ -7,7 +7,7 @@
 | Name | Steht in der ersten Spalte. Pflicht. |
 | Typ | **Text** (freier Text, Zeilenumbrüche bleiben), **Zahl** (mit Einheit, auf Wunsch Bestwert), **Ja/Nein** (Haken oder Kreuz), **Liste** (je Zeile ein Eintrag, als Aufzählung), **Auswahl** (ein Wert aus festen Optionen), **Bewertung** (1–5 Sterne), **Galerie** (Bilder zum Blättern und Vergrößern, vergleicht nichts). Vorgabe: Text. |
 | Erläuterung | Optional, steht klein unter dem Namen. |
-| Einheit | Nur bei Zahl. Steht hinter jeder Zahl, z. B. „PS“ oder „%“. |
+| Einheiten | Nur bei Zahl. Eine oder mehrere Einheiten, z. B. „PS“ und „kW“; die Einheit steht hinter jeder Zahl. Bei mehreren Einheiten bekommt jedes Element je Einheit ein eigenes Feld, auf der Seite steht je Einheit eine Zeile. Der Bestwert vergleicht die erste Einheit. |
 | Bestwert | Nur bei Zahl: **Neutral** (keine Markierung), **Höher ist besser** oder **Niedriger ist besser**. Vorgabe: Neutral. Bewertungen gelten immer als „höher ist besser“. |
 | Optionen | Nur bei Auswahl. Die Werte, aus denen jedes Element einen wählt. Mindestens eine. |
 | Icon vor dem Namen | Optional, ein Icon aus der Icon-Bibliothek vor dem Namen der Dimension. |

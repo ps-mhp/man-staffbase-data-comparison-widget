@@ -27,6 +27,7 @@ describe("validateComparison", () => {
         { id: "d1", label: " ", type: "text" },
         { id: "d2", label: "Kabine", type: "choice", options: [] },
         { id: "d3", label: "Farbe", type: "choice", options: [{ id: "o", label: "" }] },
+        { id: "d4", label: "Leistung", type: "number", units: [{ id: "a", label: "PS" }, { id: "b", label: " " }] },
       ],
       items: [{ id: "a", name: "", values: {} }],
     };
@@ -35,6 +36,7 @@ describe("validateComparison", () => {
       { id: "d1", message: "Dimension 1: Name fehlt" },
       { id: "d2", message: "Dimension 2: Auswahl ohne Optionen" },
       { id: "d3", message: "Dimension 3: Option ohne Namen" },
+      { id: "d4", message: "Dimension 4: Einheit ohne Namen" },
     ]);
   });
 });

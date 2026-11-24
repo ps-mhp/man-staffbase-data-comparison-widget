@@ -27,6 +27,8 @@ import {
   Dimension,
   GalleryImage,
   MARK_SIZE_PX,
+  NumberValues,
+  unitsOf,
   MAX_RATING,
   boolIcons,
   hasContent,
@@ -118,8 +120,25 @@ function CellContent({ item, dimension, galleryRatio }: CellContentProps): React
     case "text":
       // Bereinigt (Absätze, Aufzählungen, Icons) – hier noch einmal, denn es wird Markup.
       return <div className="man-cmp__text" dangerouslySetInnerHTML={{ __html: sanitizeTextValue(value as string) }} />;
-    case "number":
-      return <span className="man-cmp__number">{formatNumber(value as number, dimension.unit, pageLocale())}</span>;
+    case "number": {
+      const units = unitsOf(dimension);
+      if (typeof value === "object") {
+        // Je Einheit eine Zeile: „510 PS“ über „375 kW“.
+        const values = value as NumberValues;
+        return (
+          <span className="man-cmp__numbers">
+            {units
+              .filter((unit) => values[unit.id] !== undefined)
+              .map((unit) => (
+                <span key={unit.id} className="man-cmp__number">
+                  {formatNumber(values[unit.id]!, unit.label, pageLocale())}
+                </span>
+              ))}
+          </span>
+        );
+      }
+      return <span className="man-cmp__number">{formatNumber(value as number, units[0]?.label, pageLocale())}</span>;
+    }
     case "bool":
       return <BoolValue value={value as boolean} dimension={dimension} />;
     case "list":

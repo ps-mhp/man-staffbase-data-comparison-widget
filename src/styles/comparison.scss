@@ -346,6 +346,14 @@ $accents: (
   font-variant-numeric: tabular-nums;
 }
 
+// Mehrere Einheiten: je Einheit eine Zeile.
+.man-cmp__numbers {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 2px;
+  align-items: center;
+}
+
 .man-cmp__empty {
   color: man("text-disabled");
 }

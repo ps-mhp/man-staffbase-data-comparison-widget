@@ -25,6 +25,9 @@ const sameJson = (a: unknown, b: unknown): boolean => JSON.stringify(a) === JSON
 /** Warum eine Dimension so nicht geht; `undefined` = sie geht. */
 export function dimensionIssue(dimension: Dimension): string | undefined {
   if (dimension.label.trim() === "") return "Name fehlt";
+  if (dimension.type === "number" && (dimension.units?.length ?? 0) >= 2 && dimension.units!.some((unit) => unit.label.trim() === "")) {
+    return "Einheit ohne Namen";
+  }
   if (dimension.type === "choice") {
     const options = dimension.options ?? [];
     if (options.length === 0) return "Auswahl ohne Optionen";

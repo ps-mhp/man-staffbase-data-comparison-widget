@@ -53,12 +53,16 @@ function setup(initial: Dimension, issuesVisible = false) {
 }
 
 describe("DimensionForm", () => {
-  it("pflegt Einheit und Bestwert einer Zahl und lässt Leeres weg", async () => {
+  it("pflegt Einheiten und Bestwert einer Zahl und lässt Leeres weg", async () => {
     const h = setup({ id: "n", label: "Leistung", type: "number" });
-    await userEvent.type(screen.getByTestId("cmp-dimension-1-unit"), "kW");
-    expect(h.latest().unit).toBe("kW");
-    await userEvent.clear(screen.getByTestId("cmp-dimension-1-unit"));
-    expect(h.latest()).not.toHaveProperty("unit");
+    await userEvent.click(screen.getByTestId("cmp-dimension-1-add-unit"));
+    await userEvent.type(screen.getByTestId("cmp-dimension-1-unit-0"), "PS");
+    await userEvent.click(screen.getByTestId("cmp-dimension-1-add-unit"));
+    await userEvent.type(screen.getByTestId("cmp-dimension-1-unit-1"), "kW");
+    expect(h.latest().units!.map((unit) => unit.label)).toEqual(["PS", "kW"]);
+    await userEvent.click(screen.getByRole("button", { name: "Einheit 1 entfernen" }));
+    await userEvent.click(screen.getByRole("button", { name: "Einheit 1 entfernen" }));
+    expect(h.latest()).not.toHaveProperty("units");
     await userEvent.click(screen.getByRole("radio", { name: "Niedriger ist besser" }));
     expect(h.latest().prefer).toBe("lower");
     await userEvent.click(screen.getByRole("radio", { name: "Neutral" }));

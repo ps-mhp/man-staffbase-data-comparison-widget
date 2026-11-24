@@ -69,7 +69,7 @@ describe("comparisonTranslationProvider", () => {
     const translated = provider.fromTranslated(fakeTranslate(provider.toTranslatable(stored)!), stored)!;
     const config = parseConfig(translated);
     expect(config.heading).toBe("EN:Modelle im Vergleich");
-    expect(config.dimensions[1]).toMatchObject({ label: "EN:Leistung", unit: "EN:PS", prefer: "higher" });
+    expect(config.dimensions[1]).toMatchObject({ label: "EN:Leistung", units: [{ id: "ps", label: "EN:PS" }], prefer: "higher" });
     expect(config.dimensions[4]!.options![0]).toMatchObject({ id: "gx", label: "EN:GX" });
     expect(config.items[0]).toMatchObject({ name: "EN:Modell A", subtitle: "EN:Fernverkehr" });
     expect(config.items[0]!.values).toMatchObject({

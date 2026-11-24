@@ -52,7 +52,7 @@ export function configFields(config: ComparisonConfig): Field[] {
   config.dimensions.forEach((dimension) => {
     add(`d:${dimension.id}:label`, dimension.label);
     add(`d:${dimension.id}:hint`, dimension.hint);
-    if (dimension.type === "number") add(`d:${dimension.id}:unit`, dimension.unit);
+    dimension.units?.forEach((unit) => add(`d:${dimension.id}:u:${unit.id}`, unit.label));
     dimension.options?.forEach((option) => add(`d:${dimension.id}:o:${option.id}`, option.label));
   });
   config.items.forEach((item) => {
@@ -111,12 +111,14 @@ export function applyTranslatedFields(config: ComparisonConfig, fields: Readonly
     heading: pick(fields, "heading", config.heading),
     dimensions: config.dimensions.map((dimension) => {
       const hint = pickOptional(fields, `d:${dimension.id}:hint`, dimension.hint).value;
-      const unit = dimension.type === "number" ? pickOptional(fields, `d:${dimension.id}:unit`, dimension.unit).value : dimension.unit;
+
       return {
         ...dimension,
         label: pick(fields, `d:${dimension.id}:label`, dimension.label),
         ...(hint === undefined ? {} : { hint }),
-        ...(unit === undefined ? {} : { unit }),
+        ...(dimension.units === undefined
+          ? {}
+          : { units: dimension.units.map((unit) => ({ ...unit, label: pick(fields, `d:${dimension.id}:u:${unit.id}`, unit.label) })) }),
         ...(dimension.options === undefined
           ? {}
           : { options: dimension.options.map((option) => ({ ...option, label: pick(fields, `d:${dimension.id}:o:${option.id}`, option.label) })) }),

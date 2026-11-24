@@ -22,8 +22,8 @@ export const sampleConfig = (): ComparisonConfig => ({
   visibleRows: 0,
   dimensions: [
     { id: "pics", label: "Bilder", type: "gallery" },
-    { id: "power", label: "Leistung", type: "number", unit: "PS", prefer: "higher" },
-    { id: "fuel", label: "Verbrauch", type: "number", unit: "l", prefer: "lower" },
+    { id: "power", label: "Leistung", type: "number", units: [{ id: "ps", label: "PS" }], prefer: "higher" },
+    { id: "fuel", label: "Verbrauch", type: "number", units: [{ id: "l", label: "l" }], prefer: "lower" },
     { id: "ac", label: "Klimaanlage", type: "bool" },
     { id: "cab", label: "Fahrerhaus", type: "choice", options: [{ id: "gx", label: "GX" }, { id: "gm", label: "GM" }] },
     { id: "extras", label: "Extras", type: "list" },

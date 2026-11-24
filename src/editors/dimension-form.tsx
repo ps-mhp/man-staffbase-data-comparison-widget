@@ -44,6 +44,7 @@ import {
   DimensionType,
   NUMBER_PREFERENCES,
   NumberPreference,
+  NumberUnit,
   newId,
 } from "../comparison-model";
 import { MARK_SIZE_LABELS, PREFERENCE_LABELS, TYPE_LABELS } from "./labels";
@@ -74,7 +75,7 @@ const PREFERENCE_OPTIONS: readonly SegmentedOption<NumberPreference>[] = NUMBER_
 /** Ohne die Eigenschaft statt mit leerem Wert: so bleibt das Attribut schlank. */
 function withOptional(
   dimension: Dimension,
-  key: "hint" | "unit" | "icon" | "yesIcon" | "noIcon" | "yesColor" | "noColor",
+  key: "hint" | "icon" | "yesIcon" | "noIcon" | "yesColor" | "noColor",
   text: string | undefined,
 ): Dimension {
   if (text !== undefined && text !== "") return { ...dimension, [key]: text };
@@ -133,6 +134,59 @@ function OptionsEditor({ options, testId, invalid, onChange }: OptionsEditorProp
       >
         <Plus aria-hidden />
         Option hinzufügen
+      </Button>
+    </div>
+  );
+}
+
+interface UnitsEditorProps {
+  units: readonly NumberUnit[];
+  testId: string;
+  invalid: boolean;
+  onChange: (units: NumberUnit[]) => void;
+}
+
+/** Die Einheiten einer Zahl; je Einheit bekommt jedes Element ein eigenes Feld. */
+function UnitsEditor({ units, testId, invalid, onChange }: UnitsEditorProps): ReactElement {
+  return (
+    <div className="flex flex-col gap-2">
+      <span className="text-[13px] font-semibold text-foreground">Einheiten</span>
+      <span className="text-[13px] text-muted-foreground">
+        Steht hinter jeder Zahl. Mehrere Einheiten (z. B. PS und kW) ergeben je Einheit ein Feld am Element; der Bestwert
+        vergleicht die erste.
+      </span>
+      {units.map((unit, index) => (
+        <div key={unit.id} className="flex items-center gap-1.5">
+          <Input
+            className="h-9"
+            aria-label={`Einheit ${index + 1}`}
+            aria-invalid={(invalid && units.length > 1 && unit.label.trim() === "") || undefined}
+            value={unit.label}
+            placeholder={index === 0 ? "z. B. PS" : "z. B. kW"}
+            data-testid={`${testId}-unit-${index}`}
+            onChange={(event) => onChange(units.map((entry) => (entry.id === unit.id ? { ...entry, label: event.target.value } : entry)))}
+          />
+          <Button
+            type="button"
+            variant="ghost"
+            size="icon-sm"
+            aria-label={`Einheit ${index + 1} entfernen`}
+            onClick={() => onChange(units.filter((entry) => entry.id !== unit.id))}
+          >
+            <X aria-hidden />
+          </Button>
+        </div>
+      ))}
+      <Button
+        type="button"
+        variant="outline"
+        size="sm"
+        className="self-start"
+        data-testid={`${testId}-add-unit`}
+        onClick={() => onChange([...units, { id: newId(), label: "" }])}
+      >
+        <Plus aria-hidden />
+        Einheit hinzufügen
       </Button>
     </div>
   );
@@ -248,14 +302,20 @@ export function DimensionForm({
       </Field>
       {dimension.type === "number" && (
         <>
-          <Field label="Einheit" hint="Steht hinter jeder Zahl.">
-            <Input
-              data-testid={`${testId}-unit`}
-              value={dimension.unit ?? ""}
-              placeholder="z. B. PS"
-              onChange={(event) => onChange(withOptional(dimension, "unit", event.target.value))}
-            />
-          </Field>
+          <UnitsEditor
+            units={dimension.units ?? []}
+            testId={testId}
+            invalid={issue !== undefined}
+            onChange={(units) => {
+              if (units.length > 0) {
+                onChange({ ...dimension, units });
+                return;
+              }
+              const { units: _dropped, ...rest } = dimension;
+              void _dropped;
+              onChange(rest);
+            }}
+          />
           <SegmentedField
             label="Bestwert"
             hint="Welche Zahl markiert wird, wenn unter „Gestaltung“ Bestwerte an sind."

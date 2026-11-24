@@ -18,7 +18,7 @@
  * Frei von DOM und React.
  */
 
-import { CellValue, ComparisonItem, Dimension, normalizeValue } from "./comparison-model";
+import { CellValue, ComparisonItem, Dimension, normalizeValue, primaryNumber } from "./comparison-model";
 
 /** Der Wert eines Elements zu einer Dimension, in der Form des Typs; `undefined` = keine Angabe. */
 export const cellValue = (item: ComparisonItem, dimension: Dimension): CellValue | undefined =>
@@ -34,6 +34,11 @@ function compareKey(value: CellValue | undefined): string {
   if (Array.isArray(value)) {
     // Eine Liste ist eine Menge: dieselben Einträge in anderer Folge sind gleich.
     return `l:${(value as string[]).map((entry) => entry.trim().toLowerCase()).sort().join("\u0000")}`;
+  }
+  if (typeof value === "object") {
+    // Zahlen je Einheit: gleich, wenn jede Einheit dieselbe Zahl trägt.
+    const entries = Object.entries(value).sort(([a], [b]) => a.localeCompare(b));
+    return `u:${JSON.stringify(entries)}`;
   }
   return `${typeof value}:${String(value)}`;
 }
@@ -68,9 +73,10 @@ function bestDirection(dimension: Dimension): "higher" | "lower" | null {
 export function bestItemIds(items: readonly ComparisonItem[], dimension: Dimension): ReadonlySet<string> {
   const direction = bestDirection(dimension);
   if (direction === null) return new Set();
+  // Bei mehreren Einheiten zählt die erste.
   const numbers = items.flatMap((item) => {
-    const value = cellValue(item, dimension);
-    return typeof value === "number" ? [{ id: item.id, value }] : [];
+    const value = primaryNumber(cellValue(item, dimension), dimension);
+    return value === null ? [] : [{ id: item.id, value }];
   });
   if (numbers.length < 2) return new Set();
   const values = numbers.map((entry) => entry.value);

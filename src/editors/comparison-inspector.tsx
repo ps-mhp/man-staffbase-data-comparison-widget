@@ -67,7 +67,8 @@ const ACCENT_OPTIONS: readonly SegmentedOption<ComparisonAccent>[] = COMPARISON_
 
 function describe(dimension: Dimension): string {
   const type = TYPE_LABELS[dimension.type].title;
-  if (dimension.type === "number" && dimension.unit !== undefined) return `${type} · ${dimension.unit}`;
+  const units = (dimension.units ?? []).map((unit) => unit.label).filter((label) => label.trim() !== "");
+  if (dimension.type === "number" && units.length > 0) return `${type} · ${units.join(" / ")}`;
   if (dimension.type === "choice") return `${type} · ${dimension.options?.length ?? 0} Optionen`;
   return type;
 }

@@ -85,6 +85,18 @@ describe("ComparisonTable", () => {
     expect((mark as HTMLElement).style.getPropertyValue("--cmp-bool-color")).toBe("#2d6300");
   });
 
+  it("zeigt je Einheit eine Zahl und misst den Bestwert an der ersten", () => {
+    const config = sampleConfig();
+    config.dimensions[1] = { ...config.dimensions[1]!, units: [{ id: "ps", label: "PS" }, { id: "kw", label: "kW" }] };
+    config.items[0] = { ...config.items[0]!, values: { ...config.items[0]!.values, power: { ps: 510, kw: 375 } } };
+    config.items[1] = { ...config.items[1]!, values: { ...config.items[1]!.values, power: { ps: 470 } } };
+    render(<ComparisonTable config={config} />);
+    const [a, b] = within(rowOf("Leistung")).getAllByRole("cell");
+    expect(Array.from(a!.querySelectorAll(".man-cmp__number")).map((node) => node.textContent)).toEqual(["510\u202fPS", "375\u202fkW"]);
+    expect(b!.querySelectorAll(".man-cmp__number")).toHaveLength(1);
+    expect(a).toHaveTextContent("Bestwert");
+  });
+
   it("setzt die Größe der Ja/Nein-Zeichen nur abweichend von Normal", () => {
     const config = sampleConfig();
     config.dimensions[3] = { ...config.dimensions[3]!, markSize: "small" };

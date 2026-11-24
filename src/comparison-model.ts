@@ -112,13 +112,26 @@ export interface Dimension {
   noColor?: string;
   /** `bool`: Größe der Zeichen; Vorgabe `normal` (.5em von 20 px = 10 × 10 px). */
   markSize?: MarkSize;
-  /** `number`: Einheit hinter der Zahl, z. B. „kW“. */
-  unit?: string;
+  /**
+   * `number`: die Einheiten, z. B. „PS“ und „kW“. Je Einheit ein Wert am
+   * Element; der Bestwert vergleicht die erste. Ältere Fassungen speichern
+   * eine einzelne `unit` – der Parser liest sie als eine Einheit.
+   */
+  units?: NumberUnit[];
   /** `number`: welche Zahl der Bestwert ist; Vorgabe `none`. */
   prefer?: NumberPreference;
   /** `choice`: die erlaubten Werte. */
   options?: ChoiceOption[];
 }
+
+export interface NumberUnit {
+  /** Stabil über Umbenennen und Umsortieren; daran hängen die Werte. */
+  id: string;
+  label: string;
+}
+
+/** Zahlen je Einheit (Kennung der Einheit → Wert), wenn eine Dimension mehrere Einheiten hat. */
+export type NumberValues = Record<string, number>;
 
 export interface GalleryImage {
   url: string;
@@ -128,7 +141,25 @@ export interface GalleryImage {
 }
 
 /** Ein Wert in der Form, die der Typ der Dimension verlangt. */
-export type CellValue = string | number | boolean | string[] | GalleryImage[];
+export type CellValue = string | number | boolean | string[] | GalleryImage[] | NumberValues;
+
+/** Die Einheiten einer Zahl-Dimension (leer, wenn keine). */
+export const unitsOf = (dimension: Dimension): readonly NumberUnit[] => (dimension.type === "number" ? (dimension.units ?? []) : []);
+
+/** Ob eine Zahl-Dimension je Einheit einen eigenen Wert führt (ab zwei Einheiten). */
+export const hasUnitValues = (dimension: Dimension): boolean => unitsOf(dimension).length >= 2;
+
+/**
+ * Die Zahl, an der Bestwerte gemessen werden: bei mehreren Einheiten die der
+ * ersten, sonst die Zahl selbst; `null` ohne Angabe.
+ */
+export function primaryNumber(value: CellValue | undefined, dimension: Dimension): number | null {
+  if (typeof value === "number") return value;
+  if (value === undefined || typeof value !== "object" || Array.isArray(value)) return null;
+  const first = unitsOf(dimension)[0];
+  const number = first === undefined ? undefined : (value as NumberValues)[first.id];
+  return typeof number === "number" ? number : null;
+}
 
 export interface ComparisonItem {
   /** Stabil über Umsortieren hinweg — React-Key im Editor. */
@@ -236,8 +267,29 @@ export function normalizeValue(dimension: Dimension, raw: unknown): CellValue | 
       const html = typeof raw === "string" ? sanitizeTextValue(raw) : "";
       return html === "" ? undefined : html;
     }
-    case "number":
+    case "number": {
+      const units = unitsOf(dimension);
+      if (units.length >= 2) {
+        // Je Einheit eine Zahl; eine einzelne Zahl (vor der zweiten Einheit) gilt der ersten.
+        const values: NumberValues = {};
+        if (isRecord(raw)) {
+          for (const unit of units) {
+            const number = parseNumber(raw[unit.id]);
+            if (number !== null) values[unit.id] = number;
+          }
+        } else {
+          const number = parseNumber(raw);
+          if (number !== null) values[units[0]!.id] = number;
+        }
+        return Object.keys(values).length === 0 ? undefined : values;
+      }
+      // Eine oder keine Einheit: eine Zahl; bleibt nur die erste von mehreren Einheiten übrig, deren Wert.
+      if (isRecord(raw)) {
+        const first = units[0] === undefined ? undefined : raw[units[0].id];
+        return parseNumber(first ?? Object.values(raw)[0]) ?? undefined;
+      }
       return parseNumber(raw) ?? undefined;
+    }
     case "bool":
       return typeof raw === "boolean" ? raw : undefined;
     case "list": {
@@ -282,6 +334,21 @@ function parseOptions(raw: unknown): ChoiceOption[] {
   });
 }
 
+/** Die Einheiten: `units` (Liste) oder, aus älteren Fassungen, die eine `unit`. */
+function parseUnits(raw: unknown, legacy: unknown): NumberUnit[] {
+  if (!Array.isArray(raw)) {
+    const label = asText(legacy);
+    return label === "" ? [] : [{ id: "u-0", label }];
+  }
+  const used = new Set<string>();
+  return raw.flatMap((entry, index) => {
+    const unit = typeof entry === "string" ? { id: `u-${index}`, label: entry.trim() } : isRecord(entry) ? { id: idOr(entry.id, `u-${index}`), label: asText(entry.label) } : null;
+    if (unit === null || used.has(unit.id)) return [];
+    used.add(unit.id);
+    return [unit];
+  });
+}
+
 function parseDimension(raw: unknown, index: number): Dimension | null {
   if (!isRecord(raw)) return null;
   const type = DIMENSION_TYPES.includes(raw.type as DimensionType) ? (raw.type as DimensionType) : "text";
@@ -303,8 +370,8 @@ function parseDimension(raw: unknown, index: number): Dimension | null {
     if (raw.markSize === "small" || raw.markSize === "large") dimension.markSize = raw.markSize;
   }
   if (type === "number") {
-    const unit = asText(raw.unit);
-    if (unit !== "") dimension.unit = unit;
+    const units = parseUnits(raw.units, raw.unit);
+    if (units.length > 0) dimension.units = units;
     if (raw.prefer === "higher" || raw.prefer === "lower") dimension.prefer = raw.prefer;
   }
   if (type === "choice") dimension.options = parseOptions(raw.options);
@@ -401,7 +468,8 @@ function serializeDimension(dimension: Dimension): Record<string, unknown> {
     if (dimension.markSize !== undefined && dimension.markSize !== "normal") out.markSize = dimension.markSize;
   }
   if (dimension.type === "number") {
-    if (dimension.unit !== undefined && dimension.unit.trim() !== "") out.unit = dimension.unit;
+    const units = (dimension.units ?? []).filter((unit, _, all) => all.length > 1 || unit.label.trim() !== "");
+    if (units.length > 0) out.units = units.map(({ id, label }) => ({ id, label }));
     if (dimension.prefer !== undefined && dimension.prefer !== "none") out.prefer = dimension.prefer;
   }
   if (dimension.type === "choice") out.options = (dimension.options ?? []).map(({ id, label }) => ({ id, label }));
@@ -446,6 +514,14 @@ function valueAsText(value: CellValue | undefined, from: Dimension): string | un
   if (value === undefined) return undefined;
   if (from.type === "gallery") return undefined;
   if (from.type === "text") return plainOf(value as string);
+  if (from.type === "number" && typeof value === "object" && !Array.isArray(value)) {
+    // „510 PS / 375 kW“ – alle Einheiten, damit beim Wechsel zu Text nichts verloren geht.
+    const values = value as NumberValues;
+    return unitsOf(from)
+      .filter((unit) => values[unit.id] !== undefined)
+      .map((unit) => `${values[unit.id]} ${unit.label}`.trim())
+      .join(" / ");
+  }
   if (from.type === "list") return (value as string[]).map(plainOf).join("\n");
   if (typeof value === "boolean") return value ? "Ja" : "Nein";
   if (from.type === "choice") return from.options?.find((option) => option.id === value)?.label;
@@ -498,7 +574,7 @@ export function changeDimensionType(config: ComparisonConfig, dimensionId: strin
   if (from.markSize !== undefined) to.markSize = from.markSize;
   // Einheit und Vorzug reisen mit: Zahl → Text → Zahl soll sie nicht verlieren.
   // Gespeichert werden sie nur bei Zahlen (`serializeDimension`).
-  if (from.unit !== undefined) to.unit = from.unit;
+  if (from.units !== undefined) to.units = from.units;
   if (from.prefer !== undefined) to.prefer = from.prefer;
   if (type === "choice") {
     // Aus den bisherigen Texten werden Optionen — so geht beim Wechsel nichts

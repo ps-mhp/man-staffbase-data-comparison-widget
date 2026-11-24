@@ -25,7 +25,7 @@ import { Input } from "@man/config-ui/primitives/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@man/config-ui/primitives/select";
 import { RichTextField } from "@man/config-ui/rich-text/rich-text-field";
 
-import { CellValue, Dimension, GalleryImage, MAX_RATING, parseNumber } from "../comparison-model";
+import { CellValue, Dimension, GalleryImage, MAX_RATING, NumberValues, normalizeValue, parseNumber, unitsOf } from "../comparison-model";
 import { entriesToHtml, richEntries } from "../rich-values";
 import { useFieldIcons } from "./editor-icons";
 import { GalleryField } from "./gallery-field";
@@ -79,8 +79,18 @@ function TextValue(props: ValueFieldProps): ReactElement {
   );
 }
 
-function NumberValue({ dimension, value, onChange, testId }: ValueFieldProps): ReactElement {
-  const number = typeof value === "number" ? value : null;
+interface NumberInputProps {
+  value: number | null;
+  unit: string | undefined;
+  /** Name des Felds für Screenreader, wenn es mehrere gibt. */
+  ariaLabel?: string;
+  testId: string;
+  onChange: (value: number | null) => void;
+}
+
+/** Ein Zahlenfeld mit Komma und Einheit dahinter; der Rohtext bleibt beim Tippen. */
+function NumberInput({ value, unit, ariaLabel, testId, onChange }: NumberInputProps): ReactElement {
+  const number = value;
   const [text, setText] = useDraftText<number | null>(
     number,
     (entry) => (entry === null ? "" : String(entry).replace(".", ",")),
@@ -95,19 +105,58 @@ function NumberValue({ dimension, value, onChange, testId }: ValueFieldProps): R
           inputMode="decimal"
           className="max-w-[220px]"
           data-testid={testId}
+          aria-label={ariaLabel}
           aria-invalid={invalid || undefined}
           value={text}
           placeholder="z. B. 510"
           onChange={(event) => {
             setText(event.target.value);
             const parsed = parseNumber(event.target.value);
-            if (event.target.value.trim() === "") onChange(undefined);
+            if (event.target.value.trim() === "") onChange(null);
             else if (parsed !== null) onChange(parsed);
           }}
         />
-        {dimension.unit !== undefined && <span className="text-sm text-muted-foreground">{dimension.unit}</span>}
+        {unit !== undefined && unit.trim() !== "" && <span className="text-sm text-muted-foreground">{unit}</span>}
       </div>
       {invalid && <p className="text-[13px] text-destructive">Keine Zahl – gespeichert bleibt der letzte gültige Wert.</p>}
+    </div>
+  );
+}
+
+/** Eine Zahl – oder, bei mehreren Einheiten, je Einheit ein Feld. */
+function NumberValue({ dimension, value: raw, onChange, testId }: ValueFieldProps): ReactElement {
+  const units = unitsOf(dimension);
+  // In der Form der Einheiten gelesen: kam eine zweite Einheit hinzu, gilt die
+  // bisherige Zahl der ersten – sonst stünden die Felder leer.
+  const value = normalizeValue(dimension, raw);
+  if (units.length < 2) {
+    return (
+      <NumberInput
+        value={typeof value === "number" ? value : null}
+        unit={units[0]?.label}
+        testId={testId}
+        onChange={(next) => onChange(next ?? undefined)}
+      />
+    );
+  }
+  const values: NumberValues = typeof value === "object" && value !== null && !Array.isArray(value) ? (value as NumberValues) : {};
+  return (
+    <div className="flex flex-col gap-2">
+      {units.map((unit, index) => (
+        <NumberInput
+          key={unit.id}
+          value={values[unit.id] ?? null}
+          unit={unit.label}
+          ariaLabel={`${dimension.label || "Zahl"} in ${unit.label || `Einheit ${index + 1}`}`}
+          testId={`${testId}-${index}`}
+          onChange={(next) => {
+            const { [unit.id]: _dropped, ...rest } = values;
+            void _dropped;
+            const merged = next === null ? rest : { ...rest, [unit.id]: next };
+            onChange(Object.keys(merged).length === 0 ? undefined : merged);
+          }}
+        />
+      ))}
     </div>
   );
 }
@@ -231,7 +280,14 @@ export function ValueField(props: ValueFieldProps): ReactElement {
   const Control = INPUTS[dimension.type];
   const label = dimension.label.trim() === "" ? `Unbenannte Dimension (${TYPE_LABELS[dimension.type].title})` : dimension.label;
   // Pills, Auswahl und Galerie haben kein einzelnes Feld, auf das ein `<label>` zeigen könnte.
-  if (dimension.type === "bool" || dimension.type === "rating" || dimension.type === "gallery" || dimension.type === "choice") {
+  // Pills, Auswahl, Galerie und mehrere Zahlenfelder haben kein einzelnes Feld für ein `<label>`.
+  if (
+    dimension.type === "bool" ||
+    dimension.type === "rating" ||
+    dimension.type === "gallery" ||
+    dimension.type === "choice" ||
+    (dimension.type === "number" && unitsOf(dimension).length >= 2)
+  ) {
     return (
       <div className="flex flex-col gap-1.5" data-testid={`${props.testId}-field`}>
         <span className="text-[13px] font-semibold text-foreground">{label}</span>

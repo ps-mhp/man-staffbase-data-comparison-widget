@@ -121,6 +121,19 @@ describe("ComparisonEditor", () => {
     expect(h.latest().items[0]!.values.note).toBeUndefined();
   });
 
+  it("zeigt je Einheit ein Zahlenfeld und schreibt die Werte je Einheit", async () => {
+    const config = sampleConfig();
+    config.dimensions[1] = { ...config.dimensions[1]!, units: [{ id: "ps", label: "PS" }, { id: "kw", label: "kW" }] };
+    const h = setup(config);
+    expect(screen.getByTestId("cmp-item-0-value-power-0")).toHaveValue("510");
+    expect(screen.getByTestId("cmp-item-0-value-power-1")).toHaveValue("");
+    await userEvent.type(screen.getByRole("textbox", { name: "Leistung in kW" }), "375");
+    expect(h.latest().items[0]!.values.power).toEqual({ ps: 510, kw: 375 });
+    await userEvent.clear(screen.getByTestId("cmp-item-0-value-power-0"));
+    await userEvent.clear(screen.getByTestId("cmp-item-0-value-power-1"));
+    expect(h.latest().items[0]!.values.power).toBeUndefined();
+  });
+
   it("setzt Ja/Nein und Bewertung über Pills", async () => {
     const h = setup(sampleConfig());
     await userEvent.click(within(screen.getByRole("radiogroup", { name: "Klimaanlage" })).getByRole("radio", { name: "Nein" }));

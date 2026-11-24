@@ -114,7 +114,7 @@ describe("serializeConfigJson", () => {
   it("lässt Vorgaben und leere Angaben weg", () => {
     const config: ComparisonConfig = {
       ...emptyConfig(),
-      dimensions: [{ id: "n", label: "N", type: "number", unit: "", prefer: "none", hint: " " }],
+      dimensions: [{ id: "n", label: "N", type: "number", units: [{ id: "u", label: "" }], prefer: "none", hint: " " }],
       items: [{ id: "a", name: "A", subtitle: "", values: { n: 2 } }],
     };
     expect(JSON.parse(serializeConfigJson(config))).toEqual({
@@ -252,18 +252,18 @@ describe("Typwechsel", () => {
   it("behält Einheit und Vorzug über einen Umweg als Text", () => {
     const config: ComparisonConfig = {
       ...emptyConfig(),
-      dimensions: [{ id: "n", label: "N", type: "number", unit: "PS", prefer: "higher" }],
+      dimensions: [{ id: "n", label: "N", type: "number", units: [{ id: "u", label: "PS" }], prefer: "higher" }],
       items: [],
     };
     const back = changeDimensionType(changeDimensionType(config, "n", "text"), "n", "number");
-    expect(back.dimensions[0]).toMatchObject({ unit: "PS", prefer: "higher" });
+    expect(back.dimensions[0]).toMatchObject({ units: [{ id: "u", label: "PS" }], prefer: "higher" });
     expect(JSON.parse(serializeConfigJson(changeDimensionType(config, "n", "text"))).dimensions[0]).toEqual({ id: "n", label: "N", type: "text" });
   });
 
   it("wandelt Zahl in Text und zurück", () => {
     const config: ComparisonConfig = {
       ...emptyConfig(),
-      dimensions: [{ id: "n", label: "N", type: "number", unit: "PS" }],
+      dimensions: [{ id: "n", label: "N", type: "number", units: [{ id: "u", label: "PS" }] }],
       items: [{ id: "a", name: "A", values: { n: 2.5 } }],
     };
     const asText = changeDimensionType(config, "n", "text");
@@ -311,7 +311,7 @@ describe("duplicateDimension", () => {
     expect(id).toBeDefined();
     const at = config.dimensions.findIndex((dimension) => dimension.id === id);
     expect(config.dimensions[at - 1]!.id).toBe("power");
-    expect(config.dimensions[at]).toMatchObject({ label: "Leistung (Kopie)", type: "number", unit: "PS", prefer: "higher" });
+    expect(config.dimensions[at]).toMatchObject({ label: "Leistung (Kopie)", type: "number", units: [{ id: "ps", label: "PS" }], prefer: "higher" });
     expect(config.items.map((item) => item.values[id!])).toEqual([510, 470]);
   });
 
@@ -323,6 +323,40 @@ describe("duplicateDimension", () => {
     expect(duplicateDimension(full, "d0")).toEqual({ config: full });
     const config = sampleConfig();
     expect(duplicateDimension(config, "weg").config).toBe(config);
+  });
+});
+
+describe("Einheiten einer Zahl", () => {
+  const two: Dimension = {
+    id: "p",
+    label: "Leistung",
+    type: "number",
+    units: [
+      { id: "ps", label: "PS" },
+      { id: "kw", label: "kW" },
+    ],
+  };
+
+  it("liest die alte einzelne Einheit als Liste", () => {
+    const parsed = parseConfig('{"dimensions":[{"id":"p","label":"L","type":"number","unit":"PS"}]}');
+    expect(parsed.dimensions[0]!.units).toEqual([{ id: "u-0", label: "PS" }]);
+    expect(JSON.parse(serializeConfigJson(parsed)).dimensions[0]).toEqual({ id: "p", label: "L", type: "number", units: [{ id: "u-0", label: "PS" }] });
+  });
+
+  it("führt ab zwei Einheiten je Einheit eine Zahl", () => {
+    expect(normalizeValue(two, { ps: "510", kw: 375, weg: 1 })).toEqual({ ps: 510, kw: 375 });
+    expect(normalizeValue(two, 510)).toEqual({ ps: 510 });
+    expect(normalizeValue(two, { ps: "x" })).toBeUndefined();
+  });
+
+  it("behält mit nur noch einer Einheit deren Zahl", () => {
+    const one: Dimension = { ...two, units: [{ id: "kw", label: "kW" }] };
+    expect(normalizeValue(one, { ps: 510, kw: 375 })).toBe(375);
+  });
+
+  it("schreibt beim Wechsel zu Text alle Einheiten", () => {
+    const config: ComparisonConfig = { ...emptyConfig(), dimensions: [two], items: [{ id: "a", name: "A", values: { p: { ps: 510, kw: 375 } } }] };
+    expect(changeDimensionType(config, "p", "text").items[0]!.values.p).toBe("<p>510 PS / 375 kW</p>");
   });
 });
 
