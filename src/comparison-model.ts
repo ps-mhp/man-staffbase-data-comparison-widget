@@ -72,6 +72,15 @@ export const MAX_GALLERY_IMAGES = 20;
 
 export const MAX_RATING = 5;
 
+/** Zeilen, die zu sehen sind, bevor der Rest hinter „Weitere … einblenden“ verschwindet – wie in der Tabelle. */
+export const DEFAULT_VISIBLE_ROWS = 5;
+
+/** Eine gespeicherte Grenze lesen; `0` heißt „nie einklappen“, Unbrauchbares die Vorgabe. */
+export function clampVisibleRows(value: unknown): number {
+  if (typeof value !== "number" || !Number.isFinite(value) || value < 0) return DEFAULT_VISIBLE_ROWS;
+  return Math.floor(value);
+}
+
 /** Grenze für Optionen, die ein Typwechsel aus vorhandenen Werten bildet. */
 export const MAX_CHOICE_OPTIONS = 40;
 
@@ -143,6 +152,8 @@ export interface ComparisonConfig {
   markBest: boolean;
   /** Leser:innen bekommen einen Schalter „Nur Unterschiede“. Vorgabe `false`. */
   differenceToggle: boolean;
+  /** Sichtbare Zeilen, danach „Weitere … einblenden“; `0` zeigt alle. Vorgabe {@link DEFAULT_VISIBLE_ROWS}. */
+  visibleRows: number;
   dimensions: Dimension[];
   items: ComparisonItem[];
 }
@@ -153,6 +164,7 @@ export const emptyConfig = (): ComparisonConfig => ({
   highlightDifferences: true,
   markBest: true,
   differenceToggle: false,
+  visibleRows: DEFAULT_VISIBLE_ROWS,
   dimensions: [],
   items: [],
 });
@@ -355,6 +367,7 @@ export function parseConfigJson(json: string): ComparisonConfig {
     highlightDifferences: parsed.highlightDifferences !== false,
     markBest: parsed.markBest !== false,
     differenceToggle: parsed.differenceToggle === true,
+    visibleRows: parsed.visibleRows === undefined ? DEFAULT_VISIBLE_ROWS : clampVisibleRows(parsed.visibleRows),
     dimensions,
     items,
   };
@@ -415,6 +428,7 @@ export function serializeConfigJson(config: ComparisonConfig): string {
   if (!config.highlightDifferences) out.highlightDifferences = false;
   if (!config.markBest) out.markBest = false;
   if (config.differenceToggle) out.differenceToggle = true;
+  if (config.visibleRows !== DEFAULT_VISIBLE_ROWS) out.visibleRows = config.visibleRows;
   out.dimensions = config.dimensions.map(serializeDimension);
   out.items = config.items.map((item) => serializeItem(item, config.dimensions));
   return JSON.stringify(out);

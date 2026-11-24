@@ -98,7 +98,10 @@ describe("parseConfig", () => {
   });
 
   it("liest die Schalter mit ihren Vorgaben", () => {
-    expect(parseConfig("{}")).toMatchObject({ highlightDifferences: true, markBest: true, differenceToggle: false });
+    expect(parseConfig("{}")).toMatchObject({ highlightDifferences: true, markBest: true, differenceToggle: false, visibleRows: 5 });
+    expect(parseConfig('{"visibleRows":0}').visibleRows).toBe(0);
+    expect(parseConfig('{"visibleRows":-3}').visibleRows).toBe(5);
+    expect(parseConfig('{"visibleRows":7.8}').visibleRows).toBe(7);
     expect(parseConfig('{"highlightDifferences":false,"markBest":false,"differenceToggle":true}')).toMatchObject({
       highlightDifferences: false,
       markBest: false,

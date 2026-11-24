@@ -21,6 +21,9 @@ import { sampleConfig } from "./fixtures.testing";
 import { ComparisonWidget } from "./widget-root";
 import { encodeConfigAttribute } from "./comparison-model";
 
+// Die Zeichnungen der Icons kommen sonst asynchron nach dem Test an (act-Warnung).
+jest.mock("@shared/icons/use-icon-stylesheet", () => ({ useIconMasks: () => "", useIconStylesheet: () => "" }));
+
 const rowOf = (label: string): HTMLElement => screen.getByRole("rowheader", { name: new RegExp(label) }).closest("tr")!;
 
 describe("ComparisonTable", () => {
@@ -194,6 +197,34 @@ describe("Breite", () => {
     expect(root).toHaveAttribute("data-narrow");
     resize(900);
     expect(root).not.toHaveAttribute("data-narrow");
+  });
+});
+
+describe("Einklappen ab der Grenze", () => {
+  it("zeigt fünf Zeilen und nennt den Rest am Knopf, wie die Tabelle", async () => {
+    render(<ComparisonTable config={{ ...sampleConfig(), visibleRows: 5 }} />);
+    expect(screen.getAllByRole("rowheader")).toHaveLength(5);
+    const toggle = screen.getByRole("button", { name: "Weitere 4 Zeilen einblenden" });
+    expect(toggle).toHaveAttribute("aria-expanded", "false");
+    await userEvent.click(toggle);
+    expect(screen.getAllByRole("rowheader")).toHaveLength(9);
+    expect(screen.getByRole("button", { name: "Weniger Zeilen anzeigen" })).toHaveAttribute("aria-expanded", "true");
+  });
+
+  it("sagt bei einer Zeile „Weitere Zeile einblenden“", () => {
+    render(<ComparisonTable config={{ ...sampleConfig(), visibleRows: 8 }} />);
+    expect(screen.getByRole("button", { name: "Weitere Zeile einblenden" })).toBeInTheDocument();
+  });
+
+  it("klappt mit 0 oder wenigen Zeilen nicht ein", () => {
+    render(<ComparisonTable config={{ ...sampleConfig(), visibleRows: 0 }} />);
+    expect(screen.queryByTestId("cmp-rows-toggle")).not.toBeInTheDocument();
+  });
+
+  it("zählt nach „Nur Unterschiede“ nur die gezeigten Zeilen", async () => {
+    render(<ComparisonTable config={{ ...sampleConfig(), visibleRows: 5, differenceToggle: true }} />);
+    await userEvent.click(screen.getByRole("button", { name: "Nur Unterschiede" }));
+    expect(screen.getByRole("button", { name: "Weitere Zeile einblenden" })).toBeInTheDocument();
   });
 });
 

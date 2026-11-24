@@ -30,7 +30,7 @@ import { Input } from "@man/config-ui/primitives/input";
 import { useConfigShell } from "@man/config-ui/shell/shell-context";
 
 import { dimensionIssue } from "../comparison-editor-status";
-import { COMPARISON_ACCENTS, ComparisonAccent, ComparisonConfig, Dimension, DimensionType, MAX_DIMENSIONS, usedColors } from "../comparison-model";
+import { COMPARISON_ACCENTS, ComparisonAccent, ComparisonConfig, Dimension, DimensionType, MAX_DIMENSIONS, clampVisibleRows, usedColors } from "../comparison-model";
 import { DimensionForm } from "./dimension-form";
 import { ACCENT_LABELS, TYPE_LABELS } from "./labels";
 
@@ -168,8 +168,32 @@ function DesignTab({ value, onSettings }: ComparisonInspectorProps): ReactElemen
   );
 }
 
-function BehaviourTab({ value, onSettings }: ComparisonInspectorProps): ReactElement {
+function VisibleRowsField({ value, onSettings }: ComparisonInspectorProps): ReactElement {
   return (
+    <Field className="max-w-[200px]" label="Sichtbare Zeilen" hint="0 zeigt alle Zeilen; sonst klappt der Rest hinter einem Button ein.">
+      <Input
+        type="number"
+        min={0}
+        step={1}
+        inputMode="numeric"
+        data-testid="cmp-visible-rows"
+        value={value.visibleRows}
+        onChange={(event) => {
+          // Ein geleertes Feld liest sich als NaN – als 0 genommen, schaltete es
+          // das Einklappen mitten im Tippen ab. Also warten, bis eine Zahl dasteht.
+          const next = event.target.valueAsNumber;
+          if (Number.isFinite(next)) onSettings({ visibleRows: clampVisibleRows(next) });
+        }}
+      />
+    </Field>
+  );
+}
+
+function BehaviourTab(props: ComparisonInspectorProps): ReactElement {
+  const { value, onSettings } = props;
+  return (
+    <div className="flex flex-col gap-5">
+    <VisibleRowsField {...props} />
     <SwitchRow
       label="Schalter „Nur Unterschiede“"
       hint="Leser:innen können Zeilen ausblenden, in denen sich die Elemente nicht unterscheiden. Ihre Wahl wird nicht gespeichert."
@@ -177,6 +201,7 @@ function BehaviourTab({ value, onSettings }: ComparisonInspectorProps): ReactEle
       onCheckedChange={(differenceToggle) => onSettings({ differenceToggle })}
       data-testid="cmp-difference-toggle-setting"
     />
+    </div>
   );
 }
 

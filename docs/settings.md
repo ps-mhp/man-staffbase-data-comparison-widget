@@ -40,4 +40,5 @@ Höchstens 12 Elemente, 60 Dimensionen und 20 Bilder je Galerie. Bilder einer Ga
 
 | Einstellung | Beschreibung |
 | --- | --- |
+| Sichtbare Zeilen | Wie viele Zeilen (Dimensionen) zu sehen sind; der Rest klappt hinter den Knopf „Weitere … Zeilen einblenden“ ein. **0** zeigt alle. Vorgabe: 5. |
 | Schalter „Nur Unterschiede“ | Zeigt Leser:innen über der Tabelle einen Schalter, der Zeilen ohne Unterschied ausblendet. Die Wahl wird nicht gespeichert. Vorgabe: aus. |

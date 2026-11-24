@@ -71,7 +71,8 @@ function settingsChanged(draft: ComparisonConfig, saved: ComparisonConfig): bool
     draft.accent !== saved.accent ||
     draft.highlightDifferences !== saved.highlightDifferences ||
     draft.markBest !== saved.markBest ||
-    draft.differenceToggle !== saved.differenceToggle
+    draft.differenceToggle !== saved.differenceToggle ||
+    draft.visibleRows !== saved.visibleRows
   );
 }
 

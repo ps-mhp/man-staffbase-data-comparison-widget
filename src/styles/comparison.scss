@@ -13,6 +13,7 @@
 
 @use "sass:list";
 @use "@shared/stylings/man-tokens" as *;
+@use "@shared/stylings/man-craft" as *;
 
 // Aufbau: Variablen (`--cmp-*`) am Wurzelelement, die Elemente lesen sie.
 // Was Staffbase im Inhaltsbereich mit `!important` einfärbt (`h3`, `p`, `li`,
@@ -485,6 +486,15 @@ $accents: (
   text-transform: uppercase;
   letter-spacing: 0.04em;
   background: var(--cmp-accent);
+}
+
+// Der Umschalter für eingeklappte Zeilen – wie in der Tabelle der sekundäre
+// Craft-Knopf in Größe s, mittig. `!important`, weil man-theme jedem
+// `.page button` Polster, Rand und Schrift gibt.
+.man-cmp__rows-toggle {
+  @include man-button("s", "secondary", $important: true);
+  display: flex !important;
+  margin: man("space-3") auto 0 !important;
 }
 
 .man-cmp__note {

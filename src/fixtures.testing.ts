@@ -18,6 +18,8 @@ import { ComparisonConfig, emptyConfig } from "./comparison-model";
 export const sampleConfig = (): ComparisonConfig => ({
   ...emptyConfig(),
   heading: "Modelle im Vergleich",
+  // Alle Zeilen offen; das Einklappen prüfen eigene Tests.
+  visibleRows: 0,
   dimensions: [
     { id: "pics", label: "Bilder", type: "gallery" },
     { id: "power", label: "Leistung", type: "number", unit: "PS", prefer: "higher" },

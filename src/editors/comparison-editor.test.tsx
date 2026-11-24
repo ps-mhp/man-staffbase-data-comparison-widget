@@ -187,6 +187,9 @@ describe("ComparisonEditor", () => {
     await openTab("Verhalten");
     await userEvent.click(screen.getByTestId("cmp-difference-toggle-setting"));
     expect(h.latest().differenceToggle).toBe(true);
+    await userEvent.clear(screen.getByTestId("cmp-visible-rows"));
+    await userEvent.type(screen.getByTestId("cmp-visible-rows"), "8");
+    expect(h.latest().visibleRows).toBe(8);
   });
 
   it("dupliziert und löscht Elemente", async () => {

@@ -16,7 +16,7 @@
  * die beim waagerechten Scrollen stehen bleibt, und je Element eine Spalte.
  */
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useId, useRef, useState } from "react";
 
 import { useHotStyle } from "@shared/hot-style";
 import { useIconMasks } from "@shared/icons/use-icon-stylesheet";
@@ -49,6 +49,9 @@ export const COMPARISON_LABELS = {
   differencesOnly: "Nur Unterschiede",
   noDifferences: "Die Elemente unterscheiden sich in keinem Merkmal.",
   rating: (value: number): string => `${value} von ${MAX_RATING}`,
+  /** Nennt die Zahl, wie in der Tabelle: ein bloßes „mehr“ verschwiege, ob 3 oder 30 Zeilen folgen. */
+  toggleRows: (hidden: number, expanded: boolean): string =>
+    expanded ? "Weniger Zeilen anzeigen" : hidden === 1 ? "Weitere Zeile einblenden" : `Weitere ${hidden} Zeilen einblenden`,
 } as const;
 
 /** Die Sprache der Seite, für Zahlen in ihrer Schreibweise. */
@@ -239,6 +242,8 @@ export function ComparisonTable({ config }: ComparisonTableProps): React.ReactEl
   const liveCss = useHotStyle(comparisonCss, COMPARISON_WIDGET_TAG, "styles/comparison.scss");
   const [differencesOnly, setDifferencesOnly] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [expanded, setExpanded] = useState(false);
+  const bodyId = useId();
   const [rootRef, narrow] = useNarrow();
   // Nur die Zeichnungen, die der Vergleich zeigt; nachgeladen, erst wenn es Icons gibt.
   const iconCss = useIconMasks(hasContent(config) ? usedIconIds(config) : []);
@@ -250,6 +255,11 @@ export function ComparisonTable({ config }: ComparisonTableProps): React.ReactEl
   const heading = config.heading.trim();
   const showHead = heading !== "" || config.differenceToggle;
   const nothingDiffers = filterOn && dimensions.every((dimension) => !isComparable(dimension));
+  // Wie die Tabelle: ab der Grenze eingeklappt, der Knopf darunter nennt den Rest.
+  const limit = config.visibleRows;
+  const collapsible = limit > 0 && dimensions.length > limit;
+  const shown = collapsible && !expanded ? dimensions.slice(0, limit) : dimensions;
+  const hidden = collapsible ? dimensions.length - limit : 0;
 
   return (
     <section
@@ -293,13 +303,25 @@ export function ComparisonTable({ config }: ComparisonTableProps): React.ReactEl
               ))}
             </tr>
           </thead>
-          <tbody>
-            {dimensions.map((dimension) => (
+          <tbody id={bodyId}>
+            {shown.map((dimension) => (
               <Row key={dimension.id} dimension={dimension} items={config.items} config={config} />
             ))}
           </tbody>
         </table>
       </div>
+      {collapsible && (
+        <button
+          type="button"
+          className="man-cmp__rows-toggle"
+          data-testid="cmp-rows-toggle"
+          aria-expanded={expanded}
+          aria-controls={bodyId}
+          onClick={() => setExpanded((open) => !open)}
+        >
+          {COMPARISON_LABELS.toggleRows(hidden, expanded)}
+        </button>
+      )}
       {nothingDiffers && <p className="man-cmp__note">{COMPARISON_LABELS.noDifferences}</p>}
     </section>
   );
