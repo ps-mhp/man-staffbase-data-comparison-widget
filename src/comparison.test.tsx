@@ -91,6 +91,12 @@ describe("ComparisonTable", () => {
     expect(container.querySelector("style")!.textContent).toContain("width: var(--cmp-bool-size, 20px)");
   });
 
+  it("lässt eine gewählte Ja/Nein-Farbe auch in abgeblendeten Zeilen stehen", () => {
+    const { container } = render(<ComparisonTable config={sampleConfig()} />);
+    const css = container.querySelector("style")!.textContent ?? "";
+    expect(css).toMatch(/\.man-cmp__row--same \.man-cmp__bool--no \{\s*color: var\(--cmp-bool-color,/);
+  });
+
   it("zentriert Werte, nur die Merkmale stehen links", () => {
     const { container } = render(<ComparisonTable config={sampleConfig()} />);
     const css = container.querySelector("style")!.textContent ?? "";

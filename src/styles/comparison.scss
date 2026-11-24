@@ -291,10 +291,15 @@ $accents: (
   --cmp-cell-color: #{man("text-muted")};
 }
 
-.man-cmp__row--same .man-cmp__bool--yes,
-.man-cmp__row--same .man-cmp__bool--no,
 .man-cmp__row--same .man-cmp__star--on {
   color: man("text-muted");
+}
+
+// Ja/Nein in gleichen Zeilen: nur die Vorgabefarben treten zurück – eine
+// selbst gewählte Farbe (`--cmp-bool-color`) bleibt stehen.
+.man-cmp__row--same .man-cmp__bool--yes,
+.man-cmp__row--same .man-cmp__bool--no {
+  color: var(--cmp-bool-color, #{man("text-muted")});
 }
 
 .man-cmp__row--gallery {

@@ -12,7 +12,7 @@
 | Optionen | Nur bei Auswahl. Die Werte, aus denen jedes Element einen wählt. Mindestens eine. |
 | Icon vor dem Namen | Optional, ein Icon aus der Icon-Bibliothek vor dem Namen der Dimension. |
 | Zeichen für Ja / Nein | Nur bei Ja/Nein. Icon aus der Icon-Bibliothek; Vorgabe Haken und Kreuz. |
-| Farbe für Ja / Nein | Nur bei Ja/Nein. Eine MAN-CI-, Status- oder eigene Farbe; Vorgabe Akzentfarbe für Ja und Grau für Nein. |
+| Farbe für Ja / Nein | Nur bei Ja/Nein. Eine MAN-CI-, Status- oder eigene Farbe; Vorgabe Akzentfarbe für Ja und Grau für Nein. Eine gewählte Farbe bleibt auch in abgeblendeten Zeilen stehen. |
 | Größe der Zeichen | Nur bei Ja/Nein. **Kleiner** (16 × 16 px), **Normal** (20 × 20 px) oder **Größer** (24 × 24 px). Vorgabe: Normal. |
 
 Unter jeder aufgeklappten Dimension: nach oben/unten schieben, **duplizieren** (die Kopie übernimmt Typ, Einstellungen und alle Werte und steht direkt dahinter) und löschen.
