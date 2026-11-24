@@ -354,9 +354,25 @@ $accents: (
   color: var(--cmp-bool-color, #{man("text-muted")});
 }
 
-.man-cmp__bool-mark {
-  font-size: 22px;
-  line-height: 1;
+// Zwei Klassen: die Grundregel der Icons (`[data-man-icon]`, `icon-css.ts`)
+// steht im Stylesheet danach und gewönne bei gleicher Spezifität.
+.man-cmp__bool .man-cmp__bool-mark {
+  // Genau 20 × 20 px: Maske 1em groß, ohne das Geviert, das im Fließtext
+  // Unter- und Durchstreichung trägt.
+  display: block;
+  width: 20px;
+  height: 20px;
+  font-size: 20px;
+  line-height: 0;
+
+  &::before {
+    margin-right: 0;
+    vertical-align: top;
+  }
+
+  &::after {
+    content: none;
+  }
 }
 
 // Icons der Bibliothek: Maske in Schriftfarbe, Größe über `font-size`
