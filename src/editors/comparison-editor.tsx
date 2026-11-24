@@ -36,6 +36,7 @@ import {
   MAX_DIMENSIONS,
   MAX_ITEMS,
   changeDimensionType,
+  duplicateDimension,
   emptyDimension,
   emptyItem,
   newId,
@@ -121,6 +122,15 @@ function useDimensionActions(update: Update): DimensionActions {
       change: (dimension) =>
         update((config) => ({ ...config, dimensions: config.dimensions.map((entry) => (entry.id === dimension.id ? dimension : entry)) })),
       changeType: (id: string, type: DimensionType) => update((config) => changeDimensionType(config, id, type)),
+      duplicate: (id) => {
+        let copied: string | undefined;
+        update((config) => {
+          const result = duplicateDimension(config, id);
+          copied = result.id;
+          return result.config;
+        });
+        return copied;
+      },
       move: (id, by) =>
         update((config) => {
           const at = config.dimensions.findIndex((entry) => entry.id === id);

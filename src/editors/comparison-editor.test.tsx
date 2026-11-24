@@ -149,6 +149,16 @@ describe("ComparisonEditor", () => {
     expect(screen.getByTestId("cmp-item-0-value-" + h.latest().dimensions[0]!.id)).toBeInTheDocument();
   });
 
+  it("dupliziert eine Dimension samt Werten und klappt die Kopie auf", async () => {
+    const h = setup(sampleConfig());
+    await userEvent.click(screen.getByRole("button", { name: /Leistung/ }));
+    await userEvent.click(within(screen.getByTestId("cmp-dimension-1")).getByRole("button", { name: /Dimension duplizieren/ }));
+    const copy = h.latest().dimensions[2]!;
+    expect(copy).toMatchObject({ label: "Leistung (Kopie)", type: "number" });
+    expect(h.latest().items[0]!.values[copy.id]).toBe(510);
+    expect(screen.getByTestId("cmp-dimension-2-label")).toHaveValue("Leistung (Kopie)");
+  });
+
   it("löscht eine Dimension samt ihren Werten", async () => {
     const h = setup(sampleConfig());
     await userEvent.click(screen.getByRole("button", { name: /Leistung/ }));

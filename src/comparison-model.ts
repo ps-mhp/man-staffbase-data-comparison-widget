@@ -23,6 +23,7 @@
  * Frei von DOM und React.
  */
 
+import { normalizeHexColor } from "@man/config-ui/toolbar/colors";
 import { iconIdsIn } from "@shared/icons/icon-css";
 import { normalizeIconId } from "@shared/icons/icon-id";
 import { decodePayload, encodePayload, isPayload } from "@shared/payload";
@@ -89,6 +90,10 @@ export interface Dimension {
   yesIcon?: string;
   /** `bool`: Zeichen für Nein; Vorgabe {@link DEFAULT_NO_ICON}. */
   noIcon?: string;
+  /** `bool`: Farbe für Ja (`#rrggbb`); Vorgabe die Akzentfarbe. */
+  yesColor?: string;
+  /** `bool`: Farbe für Nein (`#rrggbb`); Vorgabe gedämpftes Grau. */
+  noColor?: string;
   /** `number`: Einheit hinter der Zahl, z. B. „kW“. */
   unit?: string;
   /** `number`: welche Zahl der Bestwert ist; Vorgabe `none`. */
@@ -270,6 +275,10 @@ function parseDimension(raw: unknown, index: number): Dimension | null {
     const noIcon = normalizeIconId(asText(raw.noIcon));
     if (yesIcon !== null && yesIcon !== DEFAULT_YES_ICON) dimension.yesIcon = yesIcon;
     if (noIcon !== null && noIcon !== DEFAULT_NO_ICON) dimension.noIcon = noIcon;
+    const yesColor = normalizeHexColor(asText(raw.yesColor));
+    const noColor = normalizeHexColor(asText(raw.noColor));
+    if (yesColor !== null) dimension.yesColor = yesColor;
+    if (noColor !== null) dimension.noColor = noColor;
   }
   if (type === "number") {
     const unit = asText(raw.unit);
@@ -362,6 +371,10 @@ function serializeDimension(dimension: Dimension): Record<string, unknown> {
   if (dimension.type === "bool") {
     if (dimension.yesIcon !== undefined && dimension.yesIcon !== DEFAULT_YES_ICON) out.yesIcon = dimension.yesIcon;
     if (dimension.noIcon !== undefined && dimension.noIcon !== DEFAULT_NO_ICON) out.noIcon = dimension.noIcon;
+    const yesColor = normalizeHexColor(dimension.yesColor);
+    const noColor = normalizeHexColor(dimension.noColor);
+    if (yesColor !== null) out.yesColor = yesColor;
+    if (noColor !== null) out.noColor = noColor;
   }
   if (dimension.type === "number") {
     if (dimension.unit !== undefined && dimension.unit.trim() !== "") out.unit = dimension.unit;
@@ -455,6 +468,8 @@ export function changeDimensionType(config: ComparisonConfig, dimensionId: strin
   if (from.icon !== undefined) to.icon = from.icon;
   if (from.yesIcon !== undefined) to.yesIcon = from.yesIcon;
   if (from.noIcon !== undefined) to.noIcon = from.noIcon;
+  if (from.yesColor !== undefined) to.yesColor = from.yesColor;
+  if (from.noColor !== undefined) to.noColor = from.noColor;
   // Einheit und Vorzug reisen mit: Zahl → Text → Zahl soll sie nicht verlieren.
   // Gespeichert werden sie nur bei Zahlen (`serializeDimension`).
   if (from.unit !== undefined) to.unit = from.unit;
@@ -510,6 +525,39 @@ export function usedIconIds(config: ComparisonConfig): string[] {
   ];
   return [...new Set(ids)];
 }
+
+/**
+ * Eine Kopie der Dimension direkt dahinter, mit neuer Kennung und den Werten
+ * aller Elemente – wie eine kopierte Zeile. Optionen behalten ihre Kennungen;
+ * sie gelten je Dimension. An der Höchstzahl bleibt alles, wie es ist.
+ */
+export function duplicateDimension(config: ComparisonConfig, dimensionId: string): { config: ComparisonConfig; id?: string } {
+  const at = config.dimensions.findIndex((dimension) => dimension.id === dimensionId);
+  const source = config.dimensions[at];
+  if (source === undefined || config.dimensions.length >= MAX_DIMENSIONS) return { config };
+  const copy: Dimension = {
+    ...source,
+    id: newId(),
+    label: source.label === "" ? "" : `${source.label} (Kopie)`,
+    ...(source.options === undefined ? {} : { options: source.options.map((option) => ({ ...option })) }),
+  };
+  return {
+    id: copy.id,
+    config: {
+      ...config,
+      dimensions: [...config.dimensions.slice(0, at + 1), copy, ...config.dimensions.slice(at + 1)],
+      items: config.items.map((item) => {
+        const value = item.values[source.id];
+        return value === undefined ? item : { ...item, values: { ...item.values, [copy.id]: value } };
+      }),
+    },
+  };
+}
+
+/** Die eigenen Farben aller Ja/Nein-Dimensionen – zum erneuten Wählen. */
+export const usedColors = (config: ComparisonConfig): string[] => [
+  ...new Set(config.dimensions.flatMap((dimension) => [dimension.yesColor, dimension.noColor].filter((hex): hex is string => hex !== undefined))),
+];
 
 /** Setzt oder löscht (`undefined`) den Wert eines Elements zu einer Dimension. */
 export function setItemValue(item: ComparisonItem, dimensionId: string, value: CellValue | undefined): ComparisonItem {

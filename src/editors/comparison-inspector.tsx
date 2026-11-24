@@ -30,7 +30,7 @@ import { Input } from "@man/config-ui/primitives/input";
 import { useConfigShell } from "@man/config-ui/shell/shell-context";
 
 import { dimensionIssue } from "../comparison-editor-status";
-import { COMPARISON_ACCENTS, ComparisonAccent, ComparisonConfig, Dimension, DimensionType, MAX_DIMENSIONS } from "../comparison-model";
+import { COMPARISON_ACCENTS, ComparisonAccent, ComparisonConfig, Dimension, DimensionType, MAX_DIMENSIONS, usedColors } from "../comparison-model";
 import { DimensionForm } from "./dimension-form";
 import { ACCENT_LABELS, TYPE_LABELS } from "./labels";
 
@@ -40,6 +40,8 @@ export interface DimensionActions {
   change: (dimension: Dimension) => void;
   changeType: (id: string, type: DimensionType) => void;
   move: (id: string, by: -1 | 1) => void;
+  /** Kopie dahinter; gibt deren Kennung, an der Höchstzahl `undefined`. */
+  duplicate: (id: string) => string | undefined;
   remove: (id: string) => void;
 }
 
@@ -107,6 +109,9 @@ function DimensionsTab({ value, dimensions: actions }: ComparisonInspectorProps)
               onChange={actions.change}
               onTypeChange={(type) => actions.changeType(dimension.id, type)}
               onMove={(by) => actions.move(dimension.id, by)}
+              onDuplicate={() => setOpenId(actions.duplicate(dimension.id) ?? dimension.id)}
+              canDuplicate={!full}
+              recentColors={usedColors(value)}
               onRemove={() => {
                 actions.remove(dimension.id);
                 setOpenId(null);

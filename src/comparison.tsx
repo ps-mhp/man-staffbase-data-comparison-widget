@@ -74,8 +74,11 @@ function Empty(): React.ReactElement {
 
 function BoolValue({ value, dimension }: { value: boolean; dimension: Dimension }): React.ReactElement {
   const { yes, no } = boolIcons(dimension);
+  const color = value ? dimension.yesColor : dimension.noColor;
+  // Als Variable, nicht als `color`: abgeblendete Zeilen dürfen sie weiter übersteuern.
+  const style = color === undefined ? undefined : ({ "--cmp-bool-color": color } as React.CSSProperties);
   return (
-    <span className={value ? "man-cmp__bool man-cmp__bool--yes" : "man-cmp__bool man-cmp__bool--no"}>
+    <span className={value ? "man-cmp__bool man-cmp__bool--yes" : "man-cmp__bool man-cmp__bool--no"} style={style}>
       <Icon id={value ? yes : no} className="man-cmp__bool-mark" />
       <span className="man-cmp__sr">{value ? COMPARISON_LABELS.yes : COMPARISON_LABELS.no}</span>
     </span>

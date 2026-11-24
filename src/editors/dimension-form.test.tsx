@@ -24,6 +24,7 @@ function setup(initial: Dimension, issuesVisible = false) {
   const onTypeChange = jest.fn();
   const onMove = jest.fn();
   const onRemove = jest.fn();
+  const onDuplicate = jest.fn();
   function Live(): React.ReactElement {
     const [value, setValue] = React.useState(initial);
     return (
@@ -39,13 +40,16 @@ function setup(initial: Dimension, issuesVisible = false) {
           }}
           onTypeChange={onTypeChange}
           onMove={onMove}
+          onDuplicate={onDuplicate}
+          canDuplicate
+          recentColors={["#123456"]}
           onRemove={onRemove}
         />
       </ConfigShellProvider>
     );
   }
   render(<Live />);
-  return { latest: () => onChange.mock.calls.at(-1)![0], onTypeChange, onMove, onRemove };
+  return { latest: () => onChange.mock.calls.at(-1)![0], onTypeChange, onMove, onRemove, onDuplicate };
 }
 
 describe("DimensionForm", () => {
@@ -88,6 +92,8 @@ describe("DimensionForm", () => {
     expect(h.onMove).toHaveBeenCalledWith(-1);
     await userEvent.click(screen.getByRole("button", { name: /Dimension nach unten/ }));
     expect(h.onMove).toHaveBeenCalledWith(1);
+    await userEvent.click(screen.getByRole("button", { name: /Dimension duplizieren/ }));
+    expect(h.onDuplicate).toHaveBeenCalled();
     await userEvent.click(screen.getByRole("button", { name: /Dimension löschen/ }));
     expect(h.onRemove).toHaveBeenCalled();
   });

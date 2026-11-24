@@ -29,6 +29,9 @@ import {
   serializeConfigJson,
   setItemValue,
   usedIconIds,
+  usedColors,
+  duplicateDimension,
+  MAX_DIMENSIONS,
   DEFAULT_NO_ICON,
   DEFAULT_YES_ICON,
 } from "./comparison-model";
@@ -296,6 +299,48 @@ describe("Icons", () => {
       items: [{ id: "a", name: "A", icon: "craft/check", values: {} }],
     };
     expect(usedIconIds(config)).toEqual(["craft/check", DEFAULT_YES_ICON, DEFAULT_NO_ICON]);
+  });
+});
+
+describe("duplicateDimension", () => {
+  it("setzt eine Kopie mit Werten direkt dahinter", () => {
+    const { config, id } = duplicateDimension(sampleConfig(), "power");
+    expect(id).toBeDefined();
+    const at = config.dimensions.findIndex((dimension) => dimension.id === id);
+    expect(config.dimensions[at - 1]!.id).toBe("power");
+    expect(config.dimensions[at]).toMatchObject({ label: "Leistung (Kopie)", type: "number", unit: "PS", prefer: "higher" });
+    expect(config.items.map((item) => item.values[id!])).toEqual([510, 470]);
+  });
+
+  it("bleibt an der Höchstzahl und bei unbekannter Dimension unverändert", () => {
+    const full: ComparisonConfig = {
+      ...emptyConfig(),
+      dimensions: Array.from({ length: MAX_DIMENSIONS }, (_, index) => ({ id: `d${index}`, label: "D", type: "text" as const })),
+    };
+    expect(duplicateDimension(full, "d0")).toEqual({ config: full });
+    const config = sampleConfig();
+    expect(duplicateDimension(config, "weg").config).toBe(config);
+  });
+});
+
+describe("Farben für Ja/Nein", () => {
+  it("liest, normalisiert und schreibt eigene Farben nur bei Ja/Nein", () => {
+    const parsed = parseConfig(
+      JSON.stringify({
+        dimensions: [
+          { id: "b", label: "B", type: "bool", yesColor: "#2D6300", noColor: "f00" },
+          { id: "t", label: "T", type: "text", yesColor: "#123456" },
+          { id: "x", label: "X", type: "bool", yesColor: "rot" },
+        ],
+      }),
+    );
+    expect(parsed.dimensions.map((dimension) => [dimension.yesColor, dimension.noColor])).toEqual([
+      ["#2d6300", "#ff0000"],
+      [undefined, undefined],
+      [undefined, undefined],
+    ]);
+    expect(parseConfig(encodeConfigAttribute(parsed))).toEqual(parsed);
+    expect(usedColors(parsed)).toEqual(["#2d6300", "#ff0000"]);
   });
 });
 

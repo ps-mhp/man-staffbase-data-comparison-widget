@@ -10,6 +10,11 @@
 | Einheit | Nur bei Zahl. Steht hinter jeder Zahl, z. B. „PS“ oder „%“. |
 | Bestwert | Nur bei Zahl: **Neutral** (keine Markierung), **Höher ist besser** oder **Niedriger ist besser**. Vorgabe: Neutral. Bewertungen gelten immer als „höher ist besser“. |
 | Optionen | Nur bei Auswahl. Die Werte, aus denen jedes Element einen wählt. Mindestens eine. |
+| Icon vor dem Namen | Optional, ein Icon aus der Icon-Bibliothek vor dem Namen der Dimension. |
+| Zeichen für Ja / Nein | Nur bei Ja/Nein. Icon aus der Icon-Bibliothek; Vorgabe Haken und Kreuz. |
+| Farbe für Ja / Nein | Nur bei Ja/Nein. Eine MAN-CI-, Status- oder eigene Farbe; Vorgabe Akzentfarbe für Ja und Grau für Nein. |
+
+Unter jeder aufgeklappten Dimension: nach oben/unten schieben, **duplizieren** (die Kopie übernimmt Typ, Einstellungen und alle Werte und steht direkt dahinter) und löschen.
 
 ## Elemente (links und Mitte)
 

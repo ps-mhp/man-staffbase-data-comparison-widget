@@ -74,6 +74,14 @@ describe("ComparisonTable", () => {
     expect(screen.getByRole("columnheader", { name: /Modell A/ }).querySelector('[data-man-icon="craft/truck-check"]')).not.toBeNull();
   });
 
+  it("färbt Ja/Nein mit eigenen Farben über eine Variable", () => {
+    const config = sampleConfig();
+    config.dimensions[3] = { ...config.dimensions[3]!, yesColor: "#2d6300" };
+    render(<ComparisonTable config={config} />);
+    const mark = within(rowOf("Klimaanlage")).getAllByRole("cell")[0]!.querySelector(".man-cmp__bool")!;
+    expect((mark as HTMLElement).style.getPropertyValue("--cmp-bool-color")).toBe("#2d6300");
+  });
+
   it("blendet gleiche Zeilen ab, nie die Galerie", () => {
     render(<ComparisonTable config={sampleConfig()} />);
     expect(rowOf("Klimaanlage")).toHaveClass("man-cmp__row--same");
