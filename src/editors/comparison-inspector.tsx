@@ -150,8 +150,15 @@ function DesignTab({ value, onSettings }: ComparisonInspectorProps): ReactElemen
       </Field>
       <SegmentedField label="Akzent" options={ACCENT_OPTIONS} value={value.accent} onChange={(accent) => onSettings({ accent })} />
       <SwitchRow
-        label="Gleiche Zeilen abblenden"
-        hint="Zeilen, in denen alle Elemente denselben Wert haben, treten grau zurück – die Unterschiede fallen auf."
+        label="Transponieren"
+        hint="Kehrt die Tabelle um: Elemente als Zeilen, Dimensionen als Spalten. Abblenden, Bestwerte und Einklappen gelten weiter."
+        checked={value.transposed}
+        onCheckedChange={(transposed) => onSettings({ transposed })}
+        data-testid="cmp-transposed"
+      />
+      <SwitchRow
+        label="Gleiche Werte abblenden"
+        hint="Dimensionen, in denen alle Elemente denselben Wert haben, treten grau zurück – die Unterschiede fallen auf."
         checked={value.highlightDifferences}
         onCheckedChange={(highlightDifferences) => onSettings({ highlightDifferences })}
         data-testid="cmp-highlight-differences"

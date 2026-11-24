@@ -197,6 +197,8 @@ describe("ComparisonEditor", () => {
     expect(h.latest().heading).toBe("Neu");
     await userEvent.click(screen.getByTestId("cmp-mark-best"));
     expect(h.latest().markBest).toBe(false);
+    await userEvent.click(screen.getByTestId("cmp-transposed"));
+    expect(h.latest().transposed).toBe(true);
     await openTab("Verhalten");
     await userEvent.click(screen.getByTestId("cmp-difference-toggle-setting"));
     expect(h.latest().differenceToggle).toBe(true);

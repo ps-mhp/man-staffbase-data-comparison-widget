@@ -177,6 +177,8 @@ export interface ComparisonConfig {
   markBest: boolean;
   /** Leser:innen bekommen einen Schalter „Nur Unterschiede“. Vorgabe `false`. */
   differenceToggle: boolean;
+  /** Transponiert: Elemente als Zeilen, Dimensionen als Spalten. Vorgabe `false`. */
+  transposed: boolean;
   /** Sichtbare Zeilen, danach „Weitere … einblenden“; `0` zeigt alle. Vorgabe {@link DEFAULT_VISIBLE_ROWS}. */
   visibleRows: number;
   dimensions: Dimension[];
@@ -189,6 +191,7 @@ export const emptyConfig = (): ComparisonConfig => ({
   highlightDifferences: true,
   markBest: true,
   differenceToggle: false,
+  transposed: false,
   visibleRows: DEFAULT_VISIBLE_ROWS,
   dimensions: [],
   items: [],
@@ -426,6 +429,7 @@ export function parseConfigJson(json: string): ComparisonConfig {
     highlightDifferences: parsed.highlightDifferences !== false,
     markBest: parsed.markBest !== false,
     differenceToggle: parsed.differenceToggle === true,
+    transposed: parsed.transposed === true,
     visibleRows: parsed.visibleRows === undefined ? DEFAULT_VISIBLE_ROWS : clampVisibleRows(parsed.visibleRows),
     dimensions,
     items,
@@ -488,6 +492,7 @@ export function serializeConfigJson(config: ComparisonConfig): string {
   if (!config.highlightDifferences) out.highlightDifferences = false;
   if (!config.markBest) out.markBest = false;
   if (config.differenceToggle) out.differenceToggle = true;
+  if (config.transposed) out.transposed = true;
   if (config.visibleRows !== DEFAULT_VISIBLE_ROWS) out.visibleRows = config.visibleRows;
   out.dimensions = config.dimensions.map(serializeDimension);
   out.items = config.items.map((item) => serializeItem(item, config.dimensions));

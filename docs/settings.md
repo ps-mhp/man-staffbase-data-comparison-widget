@@ -33,7 +33,8 @@ Elemente und Dimensionen gibt es beliebig viele, Bilder höchstens 20 je Galerie
 | --- | --- |
 | Überschrift | Optional, steht über der Tabelle. |
 | Akzent | **Rot**, **Anthrazit** oder **Blau** – Farbe der Haken, Sterne, Icons und Bestwerte. Vorgabe: Rot. |
-| Gleiche Zeilen abblenden | Zeilen, in denen alle Elemente denselben Wert haben, werden grau. „Keine Angabe“ zählt als eigener Wert. Galerien werden nie abgeblendet. Vorgabe: an. |
+| Transponieren | Kehrt die Tabelle um: Elemente als Zeilen (Name links, bleibt beim Scrollen stehen), Dimensionen als Spalten. Abblenden, Bestwerte, „Nur Unterschiede“ und „Sichtbare Zeilen“ gelten weiter – eingeklappt werden dann Elemente. Vorgabe: aus. |
+| Gleiche Werte abblenden | Dimensionen, in denen alle Elemente denselben Wert haben, werden grau. „Keine Angabe“ zählt als eigener Wert. Galerien werden nie abgeblendet. Vorgabe: an. |
 | Bestwerte markieren | Hebt bei Zahlen mit Vorzug und bei Bewertungen den besten Wert hervor. Haben alle Elemente denselben Wert, wird nichts markiert. Vorgabe: an. |
 
 ## Verhalten (rechts, Reiter „Verhalten“)

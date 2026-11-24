@@ -33,7 +33,7 @@ export const COMPARISON_EDITOR_HELP = (
       weg – „Rückgängig“ holt es zurück.
     </li>
     <li>
-      Unter <strong>Gestaltung</strong> blenden Sie gleiche Zeilen ab und markieren Bestwerte; unter{" "}
+      Unter <strong>Gestaltung</strong> transponieren Sie die Tabelle (Elemente als Zeilen), blenden gleiche Werte ab und markieren Bestwerte; unter{" "}
       <strong>Verhalten</strong> bekommen Leser:innen den Schalter „Nur Unterschiede“.
     </li>
     <li>Die erste Spalte bleibt auf der Seite beim waagerechten Scrollen stehen.</li>

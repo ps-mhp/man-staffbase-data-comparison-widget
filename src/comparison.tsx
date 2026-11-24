@@ -16,7 +16,7 @@
  * die beim waagerechten Scrollen stehen bleibt, und je Element eine Spalte.
  */
 
-import React, { useEffect, useId, useRef, useState } from "react";
+import React, { useEffect, useId, useMemo, useRef, useState } from "react";
 
 import { useHotStyle } from "@shared/hot-style";
 import { useIconMasks } from "@shared/icons/use-icon-stylesheet";
@@ -35,7 +35,7 @@ import {
   usedIconIds,
 } from "./comparison-model";
 import { GalleryCell } from "./gallery-cell";
-import { useGalleryRatio } from "./gallery-ratio";
+import { FALLBACK_RATIO, useGalleryRatios } from "./gallery-ratio";
 import { richEntries, sanitizeTextValue } from "./rich-values";
 import comparisonCss from "./styles/comparison.scss";
 
@@ -43,6 +43,7 @@ export const COMPARISON_WIDGET_TAG = "data-comparison-widget";
 
 export const COMPARISON_LABELS = {
   dimensionColumn: "Merkmal",
+  itemColumn: "Element",
   scroller: "Vergleichstabelle, waagerecht scrollbar",
   empty: "keine Angabe",
   yes: "Ja",
@@ -161,50 +162,102 @@ function CellContent({ item, dimension, galleryRatio }: CellContentProps): React
   }
 }
 
-const NO_IMAGES: readonly GalleryImage[] = [];
 
 function BestBadge(): React.ReactElement {
   return <span className="man-cmp__best">{COMPARISON_LABELS.best}</span>;
 }
 
-interface RowProps {
+/** Was eine Dimension in der Darstellung ausmacht – gleich, ob sie Zeile oder Spalte ist. */
+interface DimensionState {
   dimension: Dimension;
-  items: readonly ComparisonItem[];
-  config: ComparisonConfig;
+  differs: boolean;
+  /** Gleich und vergleichend: tritt zurück (nie die Galerie). */
+  muted: boolean;
+  best: ReadonlySet<string>;
+  galleryRatio: number;
 }
 
-function Row({ dimension, items, config }: RowProps): React.ReactElement {
+function dimensionState(dimension: Dimension, items: readonly ComparisonItem[], config: ComparisonConfig, ratios: ReadonlyMap<string, number>): DimensionState {
   const differs = rowDiffers(items, dimension);
-  const best = config.markBest ? bestItemIds(items, dimension) : new Set<string>();
-  // Alle Bilder der Zeile: der Rahmen richtet sich nach dem höchsten.
-  const galleryRatio = useGalleryRatio(
-    dimension.type === "gallery" ? items.flatMap((item) => (cellValue(item, dimension) as GalleryImage[] | undefined) ?? []) : NO_IMAGES,
-  );
-  // Abgeblendet wird nur, was vergleicht und gleich ist — nie die Galerie.
-  const muted = config.highlightDifferences && isComparable(dimension) && items.length > 1 && !differs;
-  const rowClass = [
-    "man-cmp__row",
-    `man-cmp__row--${dimension.type}`,
-    muted ? "man-cmp__row--same" : "",
-    differs ? "man-cmp__row--differs" : "",
+  return {
+    dimension,
+    differs,
+    muted: config.highlightDifferences && isComparable(dimension) && items.length > 1 && !differs,
+    best: config.markBest ? bestItemIds(items, dimension) : new Set<string>(),
+    galleryRatio: ratios.get(dimension.id) ?? FALLBACK_RATIO,
+  };
+}
+
+/** Eine Zelle: Wert eines Elements zu einer Dimension, mit Bestwert-Marke. */
+function ValueCell({ item, state }: { item: ComparisonItem; state: DimensionState }): React.ReactElement {
+  const isBest = state.best.has(item.id);
+  const className = [
+    "man-cmp__cell",
+    `man-cmp__cell--${state.dimension.type}`,
+    state.muted ? "man-cmp__cell--same" : "",
+    isBest ? "man-cmp__cell--best" : "",
   ]
     .filter((part) => part !== "")
     .join(" ");
+  return (
+    <td className={className}>
+      <CellContent item={item} dimension={state.dimension} galleryRatio={state.galleryRatio} />
+      {isBest && <BestBadge />}
+    </td>
+  );
+}
 
+/** Name, Icon und Erläuterung einer Dimension – als Zeilen- oder Spaltenkopf. */
+function DimensionLabel({ dimension, column }: { dimension: Dimension; column: boolean }): React.ReactElement {
+  return (
+    <>
+      <span className={column ? "man-cmp__item-name" : "man-cmp__dim-label"}>
+        {dimension.icon !== undefined && <Icon id={dimension.icon} className="man-cmp__dim-icon" />}
+        {dimension.label}
+      </span>
+      {dimension.hint !== undefined && <span className="man-cmp__dim-hint">{dimension.hint}</span>}
+    </>
+  );
+}
+
+/** Name, Icon und Untertitel eines Elements – als Spalten- oder Zeilenkopf. */
+function ItemLabel({ item, column }: { item: ComparisonItem; column: boolean }): React.ReactElement {
+  return (
+    <>
+      {item.icon !== undefined && <Icon id={item.icon} className={column ? "man-cmp__item-icon" : "man-cmp__dim-icon"} />}
+      <span className={column ? "man-cmp__item-name" : "man-cmp__dim-label"}>{item.name}</span>
+      {item.subtitle !== undefined && <span className={column ? "man-cmp__item-subtitle" : "man-cmp__dim-hint"}>{item.subtitle}</span>}
+    </>
+  );
+}
+
+/** Eine Zeile je Dimension (Vorgabe). */
+function DimensionRow({ state, items }: { state: DimensionState; items: readonly ComparisonItem[] }): React.ReactElement {
+  const { dimension, muted, differs } = state;
+  const rowClass = ["man-cmp__row", `man-cmp__row--${dimension.type}`, muted ? "man-cmp__row--same" : "", differs ? "man-cmp__row--differs" : ""]
+    .filter((part) => part !== "")
+    .join(" ");
   return (
     <tr className={rowClass} data-testid={`cmp-row-${dimension.id}`}>
       <th scope="row" className="man-cmp__dim">
-        <span className="man-cmp__dim-label">
-          {dimension.icon !== undefined && <Icon id={dimension.icon} className="man-cmp__dim-icon" />}
-          {dimension.label}
-        </span>
-        {dimension.hint !== undefined && <span className="man-cmp__dim-hint">{dimension.hint}</span>}
+        <DimensionLabel dimension={dimension} column={false} />
       </th>
       {items.map((item) => (
-        <td key={item.id} className={best.has(item.id) ? "man-cmp__cell man-cmp__cell--best" : "man-cmp__cell"}>
-          <CellContent item={item} dimension={dimension} galleryRatio={galleryRatio} />
-          {best.has(item.id) && <BestBadge />}
-        </td>
+        <ValueCell key={item.id} item={item} state={state} />
+      ))}
+    </tr>
+  );
+}
+
+/** Transponiert: eine Zeile je Element, die Dimensionen als Spalten. */
+function ItemRow({ item, states }: { item: ComparisonItem; states: readonly DimensionState[] }): React.ReactElement {
+  return (
+    <tr className="man-cmp__row" data-testid={`cmp-item-row-${item.id}`}>
+      <th scope="row" className="man-cmp__dim">
+        <ItemLabel item={item} column={false} />
+      </th>
+      {states.map((state) => (
+        <ValueCell key={state.dimension.id} item={item} state={state} />
       ))}
     </tr>
   );
@@ -266,6 +319,17 @@ export function ComparisonTable({ config }: ComparisonTableProps): React.ReactEl
   const [rootRef, narrow] = useNarrow();
   // Nur die Zeichnungen, die der Vergleich zeigt; nachgeladen, erst wenn es Icons gibt.
   const iconCss = useIconMasks(hasContent(config) ? usedIconIds(config) : []);
+  // Je Galerie-Dimension ein Rahmen, gemessen am höchsten Bild aller Elemente.
+  const galleryGroups = useMemo(
+    () =>
+      new Map(
+        config.dimensions
+          .filter((dimension) => dimension.type === "gallery")
+          .map((dimension) => [dimension.id, config.items.flatMap((item) => (cellValue(item, dimension) as GalleryImage[] | undefined) ?? [])]),
+      ),
+    [config],
+  );
+  const ratios = useGalleryRatios(galleryGroups);
 
   if (!hasContent(config)) return null;
 
@@ -274,11 +338,16 @@ export function ComparisonTable({ config }: ComparisonTableProps): React.ReactEl
   const heading = config.heading.trim();
   const showHead = heading !== "" || config.differenceToggle;
   const nothingDiffers = filterOn && dimensions.every((dimension) => !isComparable(dimension));
+  const states = dimensions.map((dimension) => dimensionState(dimension, config.items, config, ratios));
+  // Zeilen sind die Dimensionen – transponiert die Elemente; Spalten das jeweils andere.
+  const transposed = config.transposed;
+  const rowCount = transposed ? config.items.length : states.length;
+  const columnCount = transposed ? states.length : config.items.length;
   // Wie die Tabelle: ab der Grenze eingeklappt, der Knopf darunter nennt den Rest.
   const limit = config.visibleRows;
-  const collapsible = limit > 0 && dimensions.length > limit;
-  const shown = collapsible && !expanded ? dimensions.slice(0, limit) : dimensions;
-  const hidden = collapsible ? dimensions.length - limit : 0;
+  const collapsible = limit > 0 && rowCount > limit;
+  const visible = collapsible && !expanded ? limit : rowCount;
+  const hidden = collapsible ? rowCount - limit : 0;
 
   return (
     <section
@@ -306,26 +375,33 @@ export function ComparisonTable({ config }: ComparisonTableProps): React.ReactEl
         tabIndex={0}
         onScroll={(event) => setScrolled(event.currentTarget.scrollLeft > 0)}
       >
-        <table className="man-cmp__table" style={{ "--cmp-columns": config.items.length } as React.CSSProperties}>
+        <table
+          className={transposed ? "man-cmp__table man-cmp__table--transposed" : "man-cmp__table"}
+          style={{ "--cmp-columns": columnCount } as React.CSSProperties}
+        >
           {heading !== "" && <caption className="man-cmp__sr">{heading}</caption>}
           <thead>
             <tr className="man-cmp__header-row">
               <th scope="col" className="man-cmp__corner">
-                <span className="man-cmp__sr">{COMPARISON_LABELS.dimensionColumn}</span>
+                <span className="man-cmp__sr">{transposed ? COMPARISON_LABELS.itemColumn : COMPARISON_LABELS.dimensionColumn}</span>
               </th>
-              {config.items.map((item) => (
-                <th key={item.id} scope="col" className="man-cmp__item">
-                  {item.icon !== undefined && <Icon id={item.icon} className="man-cmp__item-icon" />}
-                  <span className="man-cmp__item-name">{item.name}</span>
-                  {item.subtitle !== undefined && <span className="man-cmp__item-subtitle">{item.subtitle}</span>}
-                </th>
-              ))}
+              {transposed
+                ? states.map(({ dimension }) => (
+                    <th key={dimension.id} scope="col" className="man-cmp__item">
+                      <DimensionLabel dimension={dimension} column />
+                    </th>
+                  ))
+                : config.items.map((item) => (
+                    <th key={item.id} scope="col" className="man-cmp__item">
+                      <ItemLabel item={item} column />
+                    </th>
+                  ))}
             </tr>
           </thead>
           <tbody id={bodyId}>
-            {shown.map((dimension) => (
-              <Row key={dimension.id} dimension={dimension} items={config.items} config={config} />
-            ))}
+            {transposed
+              ? config.items.slice(0, visible).map((item) => <ItemRow key={item.id} item={item} states={states} />)
+              : states.slice(0, visible).map((state) => <DimensionRow key={state.dimension.id} state={state} items={config.items} />)}
           </tbody>
         </table>
       </div>

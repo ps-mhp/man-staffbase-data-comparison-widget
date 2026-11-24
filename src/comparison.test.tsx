@@ -111,7 +111,7 @@ describe("ComparisonTable", () => {
   it("lässt eine gewählte Ja/Nein-Farbe auch in abgeblendeten Zeilen stehen", () => {
     const { container } = render(<ComparisonTable config={sampleConfig()} />);
     const css = container.querySelector("style")!.textContent ?? "";
-    expect(css).toMatch(/\.man-cmp__row--same \.man-cmp__bool--no \{\s*color: var\(--cmp-bool-color,/);
+    expect(css).toMatch(/\.man-cmp__cell--same \.man-cmp__bool--no \{\s*color: var\(--cmp-bool-color,/);
   });
 
   it("zentriert Werte, nur die Merkmale stehen links", () => {
@@ -209,6 +209,47 @@ describe("Breite", () => {
     expect(root).toHaveAttribute("data-narrow");
     resize(900);
     expect(root).not.toHaveAttribute("data-narrow");
+  });
+});
+
+describe("Transponiert", () => {
+  const transposed = (): ComparisonConfig => ({ ...sampleConfig(), transposed: true });
+
+  it("zeigt Elemente als Zeilen und Dimensionen als Spalten", () => {
+    render(<ComparisonTable config={transposed()} />);
+    const table = screen.getByRole("table");
+    expect(within(table).getAllByRole("rowheader").map((header) => header.textContent)).toEqual(["Modell AFernverkehr", "Modell B"]);
+    expect(within(table).getAllByRole("columnheader")).toHaveLength(10);
+    expect(within(table).getByRole("columnheader", { name: /Leistung/ })).toBeInTheDocument();
+    expect(screen.getByText("Element")).toHaveClass("man-cmp__sr");
+  });
+
+  it("blendet gleiche Spalten ab und markiert Bestwerte je Zelle", () => {
+    render(<ComparisonTable config={transposed()} />);
+    const rowA = screen.getByTestId("cmp-item-row-a");
+    const cells = within(rowA).getAllByRole("cell");
+    // Reihenfolge der Spalten = Dimensionen: Bilder, Leistung, Verbrauch, Klimaanlage …
+    expect(cells[1]).toHaveClass("man-cmp__cell--best");
+    expect(cells[3]).toHaveClass("man-cmp__cell--same");
+    expect(cells[0]).not.toHaveClass("man-cmp__cell--same");
+  });
+
+  it("klappt Elemente ab der Grenze ein", async () => {
+    const config: ComparisonConfig = {
+      ...transposed(),
+      visibleRows: 1,
+    };
+    render(<ComparisonTable config={config} />);
+    expect(screen.getAllByRole("rowheader")).toHaveLength(1);
+    await userEvent.click(screen.getByRole("button", { name: "Weitere Zeile einblenden" }));
+    expect(screen.getAllByRole("rowheader")).toHaveLength(2);
+  });
+
+  it("blendet mit „Nur Unterschiede“ gleiche Spalten aus", async () => {
+    render(<ComparisonTable config={{ ...transposed(), differenceToggle: true }} />);
+    await userEvent.click(screen.getByRole("button", { name: "Nur Unterschiede" }));
+    expect(screen.queryByRole("columnheader", { name: /Klimaanlage/ })).not.toBeInTheDocument();
+    expect(screen.getByRole("columnheader", { name: /Leistung/ })).toBeInTheDocument();
   });
 });
 

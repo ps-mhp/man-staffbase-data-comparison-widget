@@ -64,6 +64,23 @@ function useMeasuredRatios(urls: readonly string[]): ReadonlyMap<string, number>
   return measured;
 }
 
+/**
+ * Die Rahmen mehrerer Galerien auf einmal (je Gruppe eines), mit einer
+ * gemeinsamen Nachmessung – für die Tabelle, die je Galerie-Dimension einen
+ * Rahmen braucht, egal ob sie Zeile oder Spalte ist.
+ */
+export function useGalleryRatios(groups: ReadonlyMap<string, readonly GalleryImage[]>): ReadonlyMap<string, number> {
+  const all = useMemo(() => [...groups.values()].flat(), [groups]);
+  const unknown = useMemo(
+    () => [...new Set(all.filter((image) => ratioOf(image.width, image.height) === undefined).map((image) => image.url))],
+    [all],
+  );
+  const measured = useMeasuredRatios(unknown);
+  return new Map(
+    [...groups].map(([key, images]) => [key, frameRatio(images.map((image) => ratioOf(image.width, image.height) ?? measured.get(image.url)))]),
+  );
+}
+
 /** Das Seitenverhältnis des Rahmens für alle Bilder einer Galerie-Zeile. */
 export function useGalleryRatio(images: readonly GalleryImage[]): number {
   const unknown = useMemo(
