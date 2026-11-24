@@ -13,7 +13,6 @@
 
 import * as React from "react";
 
-import { MAX_ITEMS } from "./comparison-model";
 
 export const COMPARISON_EDITOR_HELP = (
   <ul className="flex list-disc flex-col gap-2 pl-5">
@@ -22,7 +21,7 @@ export const COMPARISON_EDITOR_HELP = (
       der Tabelle, mit Name und Typ (Text, Zahl, Ja/Nein, Liste, Auswahl, Bewertung oder Galerie).
     </li>
     <li>
-      Links stehen die <strong>Elemente</strong>, die verglichen werden – je Element eine Spalte, höchstens {MAX_ITEMS}.
+      Links stehen die <strong>Elemente</strong>, die verglichen werden – je Element eine Spalte, beliebig viele.
       Wählen Sie ein Element und tragen Sie in der Mitte zu jeder Dimension seinen Wert ein.
     </li>
     <li>

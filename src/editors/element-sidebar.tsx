@@ -21,7 +21,7 @@ import { SidebarPanel } from "@man/config-ui/sidebar/sidebar-panel";
 import { IconGlyph } from "@shared/icons/icon-glyph";
 
 import { itemIssue } from "../comparison-editor-status";
-import { ComparisonItem, Dimension, GalleryImage, MAX_ITEMS, normalizeValue } from "../comparison-model";
+import { ComparisonItem, Dimension, GalleryImage, normalizeValue } from "../comparison-model";
 
 export interface ElementSidebarProps {
   items: readonly ComparisonItem[];
@@ -79,7 +79,7 @@ function listItems(items: readonly ComparisonItem[], dimensions: readonly Dimens
 export function ElementSidebar({ items, dimensions, selectedId, onSelect, onAdd, onReorder }: ElementSidebarProps): ReactElement {
   const { issuesVisible } = useConfigShell();
   return (
-    <SidebarPanel title="Elemente" count={items.length} max={MAX_ITEMS} addLabel="Neues Element" onAdd={onAdd}>
+    <SidebarPanel title="Elemente" count={items.length} addLabel="Neues Element" onAdd={onAdd}>
       <ItemList
         aria-label="Elemente"
         items={listItems(items, dimensions, issuesVisible)}

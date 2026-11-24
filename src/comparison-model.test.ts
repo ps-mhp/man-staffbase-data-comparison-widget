@@ -16,7 +16,6 @@ import { decodePayload } from "@shared/payload";
 import {
   ComparisonConfig,
   Dimension,
-  MAX_ITEMS,
   changeDimensionType,
   convertValue,
   emptyConfig,
@@ -31,7 +30,6 @@ import {
   usedIconIds,
   usedColors,
   duplicateDimension,
-  MAX_DIMENSIONS,
   DEFAULT_NO_ICON,
   DEFAULT_YES_ICON,
 } from "./comparison-model";
@@ -86,9 +84,12 @@ describe("parseConfig", () => {
     expect(new Set(parsed.items.map((item) => item.id)).size).toBe(2);
   });
 
-  it("nimmt höchstens MAX_ITEMS Elemente", () => {
-    const items = Array.from({ length: MAX_ITEMS + 3 }, (_, index) => ({ id: String(index), name: String(index) }));
-    expect(parseConfig(JSON.stringify({ items })).items).toHaveLength(MAX_ITEMS);
+  it("nimmt beliebig viele Elemente und Dimensionen", () => {
+    const items = Array.from({ length: 40 }, (_, index) => ({ id: String(index), name: String(index) }));
+    const dimensions = Array.from({ length: 120 }, (_, index) => ({ id: `d${index}`, label: "D" }));
+    const parsed = parseConfig(JSON.stringify({ items, dimensions }));
+    expect(parsed.items).toHaveLength(40);
+    expect(parsed.dimensions).toHaveLength(120);
   });
 
   it("setzt einen unbekannten Typ auf Text und eine unbekannte Farbe auf Rot", () => {
@@ -315,12 +316,7 @@ describe("duplicateDimension", () => {
     expect(config.items.map((item) => item.values[id!])).toEqual([510, 470]);
   });
 
-  it("bleibt an der Höchstzahl und bei unbekannter Dimension unverändert", () => {
-    const full: ComparisonConfig = {
-      ...emptyConfig(),
-      dimensions: Array.from({ length: MAX_DIMENSIONS }, (_, index) => ({ id: `d${index}`, label: "D", type: "text" as const })),
-    };
-    expect(duplicateDimension(full, "d0")).toEqual({ config: full });
+  it("bleibt bei unbekannter Dimension unverändert", () => {
     const config = sampleConfig();
     expect(duplicateDimension(config, "weg").config).toBe(config);
   });

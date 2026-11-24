@@ -31,7 +31,6 @@ export interface ElementMainProps {
   dimensions: readonly Dimension[];
   position: number;
   total: number;
-  full: boolean;
   /** Ob „Übernehmen“ schon an Fehlern scheiterte; erst dann zeigen Felder ihre. */
   issuesVisible: boolean;
   onRename: (patch: Pick<ComparisonItem, "name"> & { subtitle?: string }) => void;
@@ -47,7 +46,6 @@ export function ElementMain({
   dimensions,
   position,
   total,
-  full,
   issuesVisible,
   onRename,
   onIcon,
@@ -80,7 +78,6 @@ export function ElementMain({
             canMoveBack={position > 0}
             canMoveForward={position < total - 1}
             onDuplicate={onDuplicate}
-            canDuplicate={!full}
             onDelete={onRemove}
           />
         </div>

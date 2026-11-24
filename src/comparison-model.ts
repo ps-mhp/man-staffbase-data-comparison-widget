@@ -61,12 +61,6 @@ export type ComparisonAccent = "red" | "grey" | "blue";
 
 export const COMPARISON_ACCENTS: readonly ComparisonAccent[] = ["red", "grey", "blue"];
 
-/** Mehr Spalten liest niemand mehr nebeneinander, auch nicht mit Scrollen. */
-export const MAX_ITEMS = 12;
-
-/** Grenze gegen versehentlich riesige Attribute. */
-export const MAX_DIMENSIONS = 60;
-
 /** Grenze je Galerie; mehr blättert niemand durch. */
 export const MAX_GALLERY_IMAGES = 20;
 
@@ -420,13 +414,11 @@ export function parseConfigJson(json: string): ComparisonConfig {
   const base = emptyConfig();
   const dimensions = uniqueIds(
     (Array.isArray(parsed.dimensions) ? parsed.dimensions : [])
-      .flatMap((entry, index) => parseDimension(entry, index) ?? [])
-      .slice(0, MAX_DIMENSIONS),
+      .flatMap((entry, index) => parseDimension(entry, index) ?? []),
   );
   const items = uniqueIds(
     (Array.isArray(parsed.items) ? parsed.items : [])
-      .flatMap((entry, index) => parseItem(entry, index, dimensions) ?? [])
-      .slice(0, MAX_ITEMS),
+      .flatMap((entry, index) => parseItem(entry, index, dimensions) ?? []),
   );
   return {
     heading: asText(parsed.heading),
@@ -631,12 +623,12 @@ export function usedIconIds(config: ComparisonConfig): string[] {
 /**
  * Eine Kopie der Dimension direkt dahinter, mit neuer Kennung und den Werten
  * aller Elemente – wie eine kopierte Zeile. Optionen behalten ihre Kennungen;
- * sie gelten je Dimension. An der Höchstzahl bleibt alles, wie es ist.
+ * sie gelten je Dimension.
  */
 export function duplicateDimension(config: ComparisonConfig, dimensionId: string): { config: ComparisonConfig; id?: string } {
   const at = config.dimensions.findIndex((dimension) => dimension.id === dimensionId);
   const source = config.dimensions[at];
-  if (source === undefined || config.dimensions.length >= MAX_DIMENSIONS) return { config };
+  if (source === undefined) return { config };
   const copy: Dimension = {
     ...source,
     id: newId(),

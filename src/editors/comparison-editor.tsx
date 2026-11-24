@@ -33,8 +33,6 @@ import {
   ComparisonConfig,
   ComparisonItem,
   DimensionType,
-  MAX_DIMENSIONS,
-  MAX_ITEMS,
   changeDimensionType,
   duplicateDimension,
   emptyDimension,
@@ -112,7 +110,6 @@ function useDimensionActions(update: Update): DimensionActions {
       add: () => {
         added = undefined;
         update((config) => {
-          if (config.dimensions.length >= MAX_DIMENSIONS) return config;
           const fresh = emptyDimension();
           added = fresh.id;
           return { ...config, dimensions: [...config.dimensions, fresh] };
@@ -176,25 +173,22 @@ export function ComparisonEditor({ value, onChange, mediaClient }: ComparisonEdi
   const { media, overlay } = useEditorMediaValue(mediaClient);
   const { items, dimensions } = value;
   const { index, item, select } = useSelection(items);
-  const full = items.length >= MAX_ITEMS;
   const dimensionActions = useDimensionActions(update);
   const richTextIcons = useRichTextIcons();
   // Die Zeichnungen der Icons in den Textfeldern; die Vorschau lädt ihre selbst.
   const iconCss = useIconMasks(usedIconIds(value));
 
   const add = (): void => {
-    if (full) return;
     const fresh = emptyItem();
-    // Die Grenze auch am jüngsten Stand: zwei schnelle Klicks sähen sonst beide „noch Platz“.
-    update((config) => (config.items.length >= MAX_ITEMS ? config : { ...config, items: [...config.items, fresh] }));
+    update((config) => ({ ...config, items: [...config.items, fresh] }));
     select(fresh.id, items.length);
   };
   const duplicate = (): void => {
-    if (item === undefined || full) return;
+    if (item === undefined) return;
     const copy: ComparisonItem = { ...item, id: newId(), name: item.name === "" ? "" : `${item.name} (Kopie)` };
     update((config) => {
       const at = config.items.findIndex((entry) => entry.id === item.id);
-      if (at < 0 || config.items.length >= MAX_ITEMS) return config;
+      if (at < 0) return config;
       return { ...config, items: [...config.items.slice(0, at + 1), copy, ...config.items.slice(at + 1)] };
     });
     select(copy.id, index + 1);
@@ -240,7 +234,6 @@ export function ComparisonEditor({ value, onChange, mediaClient }: ComparisonEdi
             dimensions={dimensions}
             position={index}
             total={items.length}
-            full={full}
             issuesVisible={issuesVisible}
             onRename={({ name, subtitle }) => {
               if (item === undefined) return;
