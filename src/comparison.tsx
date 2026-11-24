@@ -32,6 +32,7 @@ import {
   usedIconIds,
 } from "./comparison-model";
 import { GalleryCell } from "./gallery-cell";
+import { useGalleryRatio } from "./gallery-ratio";
 import { richEntries, sanitizeTextValue } from "./rich-values";
 import comparisonCss from "./styles/comparison.scss";
 
@@ -96,9 +97,11 @@ function RatingValue({ value }: { value: number }): React.ReactElement {
 interface CellContentProps {
   item: ComparisonItem;
   dimension: Dimension;
+  /** Rahmen der Galerie-Zeile, siehe `useGalleryRatio`. */
+  galleryRatio: number;
 }
 
-function CellContent({ item, dimension }: CellContentProps): React.ReactElement | null {
+function CellContent({ item, dimension, galleryRatio }: CellContentProps): React.ReactElement | null {
   const value = cellValue(item, dimension);
   if (value === undefined) return <Empty />;
   switch (dimension.type) {
@@ -125,9 +128,11 @@ function CellContent({ item, dimension }: CellContentProps): React.ReactElement 
     case "rating":
       return <RatingValue value={value as number} />;
     case "gallery":
-      return <GalleryCell images={value as GalleryImage[]} label={`${dimension.label}: ${item.name}`} />;
+      return <GalleryCell images={value as GalleryImage[]} label={`${dimension.label}: ${item.name}`} ratio={galleryRatio} />;
   }
 }
+
+const NO_IMAGES: readonly GalleryImage[] = [];
 
 function BestBadge(): React.ReactElement {
   return <span className="man-cmp__best">{COMPARISON_LABELS.best}</span>;
@@ -142,6 +147,10 @@ interface RowProps {
 function Row({ dimension, items, config }: RowProps): React.ReactElement {
   const differs = rowDiffers(items, dimension);
   const best = config.markBest ? bestItemIds(items, dimension) : new Set<string>();
+  // Alle Bilder der Zeile: der Rahmen richtet sich nach dem höchsten.
+  const galleryRatio = useGalleryRatio(
+    dimension.type === "gallery" ? items.flatMap((item) => (cellValue(item, dimension) as GalleryImage[] | undefined) ?? []) : NO_IMAGES,
+  );
   // Abgeblendet wird nur, was vergleicht und gleich ist — nie die Galerie.
   const muted = config.highlightDifferences && isComparable(dimension) && items.length > 1 && !differs;
   const rowClass = [
@@ -164,7 +173,7 @@ function Row({ dimension, items, config }: RowProps): React.ReactElement {
       </th>
       {items.map((item) => (
         <td key={item.id} className={best.has(item.id) ? "man-cmp__cell man-cmp__cell--best" : "man-cmp__cell"}>
-          <CellContent item={item} dimension={dimension} />
+          <CellContent item={item} dimension={dimension} galleryRatio={galleryRatio} />
           {best.has(item.id) && <BestBadge />}
         </td>
       ))}

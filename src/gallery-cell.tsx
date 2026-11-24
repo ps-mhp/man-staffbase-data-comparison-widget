@@ -21,6 +21,7 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 
 import { GalleryImage } from "./comparison-model";
+import { FALLBACK_RATIO } from "./gallery-ratio";
 
 export const GALLERY_LABELS = {
   previous: "Vorheriges Bild",
@@ -158,11 +159,16 @@ function Lightbox({ images, index, label, open, onStep, onClose }: LightboxProps
 
 export interface GalleryCellProps {
   images: readonly GalleryImage[];
+  /**
+   * Breite ÷ Höhe des Rahmens – das des höchsten Bildes der Zeile
+   * (`useGalleryRatio`), damit jedes Bild in voller Höhe zu sehen ist.
+   */
+  ratio?: number;
   /** Wessen Bilder das sind, etwa „TGX 18.510“ — Name des vergrößerten Fensters. */
   label: string;
 }
 
-export function GalleryCell({ images, label }: GalleryCellProps): React.ReactElement | null {
+export function GalleryCell({ images, label, ratio = FALLBACK_RATIO }: GalleryCellProps): React.ReactElement | null {
   const [index, setIndex] = useState(0);
   const [enlarged, setEnlarged] = useState(false);
   const enlargeRef = useRef<HTMLButtonElement>(null);
@@ -175,7 +181,7 @@ export function GalleryCell({ images, label }: GalleryCellProps): React.ReactEle
 
   return (
     <div className="man-cmp-gallery" data-testid="cmp-gallery">
-      <div className="man-cmp-gallery__frame">
+      <div className="man-cmp-gallery__frame" style={{ aspectRatio: String(ratio) }}>
         <img className="man-cmp-gallery__image" src={image.url} alt={altOf(image, label, current, total)} loading="lazy" />
       </div>
       <Pager total={total} onStep={step} className="man-cmp-gallery__nav" />

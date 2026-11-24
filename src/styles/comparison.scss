@@ -491,6 +491,7 @@ $accents: (
 }
 
 .man-cmp-gallery__frame {
+  // Das Seitenverhältnis setzt `comparison.tsx` je Zeile: das des höchsten Bildes.
   aspect-ratio: 4 / 3;
   overflow: hidden;
   background: man("surface-app");
@@ -501,7 +502,8 @@ $accents: (
   width: 100% !important;
   height: 100% !important;
   margin: 0 !important;
-  object-fit: cover;
+  // Nie beschneiden: jedes Bild in voller Höhe, schmalere mit Fläche daneben.
+  object-fit: contain;
 }
 
 .man-cmp-gallery__nav {
