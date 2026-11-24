@@ -175,7 +175,6 @@ $accents: (
   width: 100%;
   overflow-x: auto;
   overscroll-behavior-x: contain;
-  border-top: man("border-width-strong") solid var(--cmp-accent);
 
   &:focus-visible {
     outline: man("focus-width") solid man("focus-color");

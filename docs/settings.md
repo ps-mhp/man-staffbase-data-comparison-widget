@@ -26,7 +26,7 @@ Höchstens 12 Elemente, 60 Dimensionen und 20 Bilder je Galerie. Bilder einer Ga
 | Einstellung | Beschreibung |
 | --- | --- |
 | Überschrift | Optional, steht über der Tabelle. |
-| Akzent | **Rot**, **Anthrazit** oder **Blau** – Farbe der Linie über der Tabelle, der Haken, Sterne und Bestwerte. Vorgabe: Rot. |
+| Akzent | **Rot**, **Anthrazit** oder **Blau** – Farbe der Haken, Sterne, Icons und Bestwerte. Vorgabe: Rot. |
 | Gleiche Zeilen abblenden | Zeilen, in denen alle Elemente denselben Wert haben, werden grau. „Keine Angabe“ zählt als eigener Wert. Galerien werden nie abgeblendet. Vorgabe: an. |
 | Bestwerte markieren | Hebt bei Zahlen mit Vorzug und bei Bewertungen den besten Wert hervor. Haben alle Elemente denselben Wert, wird nichts markiert. Vorgabe: an. |
 
