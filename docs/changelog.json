@@ -1,6 +1,28 @@
 {
   "versions": [
     {
+      "version": "0.1.0-rc.2",
+      "date": "2026-11-24",
+      "entries": [
+        {
+          "type": "feat",
+          "text": "Groesse der Ja/Nein-Zeichen waehlbar"
+        },
+        {
+          "type": "feat",
+          "text": "Dimensionen duplizieren, Farben fuer Ja/Nein"
+        },
+        {
+          "type": "fix",
+          "text": "Galerie-Knoepfe gegen Staffbase-Knopfstile absichern"
+        },
+        {
+          "type": "fix",
+          "text": "Galerie zeigt Bilder in voller Hoehe"
+        }
+      ]
+    },
+    {
       "version": "0.1.0-rc.1",
       "date": "2026-11-24",
       "entries": [

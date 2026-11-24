@@ -28,6 +28,6 @@
 
 ## Jeśli coś nie działa
 
-1. Nie można kliknąć **Zastosuj** i pojawia się komunikat o błędzie: każdy element i każdy wymiar musi mieć nazwę, a każdy wybór co najmniej jedną nazwą opcję. Odpowiednie wpisy są zaznaczone na czerwono.
+1. Nie można kliknąć **Zastosuj** i pojawia się komunikat o błędzie: każdy element i każdy wymiar musi mieć nazwę, a każdy wybór co najmniej jedną nazwę opcji. Odpowiednie wpisy są zaznaczone na czerwono.
 2. Tabela nie pojawia się na stronie: potrzebny jest co najmniej jeden element i jeden wymiar z co najmniej jedną wartością.
 3. Jeśli zamiast okna edycji pojawia się tylko pole tekstowe, należy ponownie załadować Studio. Pole tekstowe zawiera porównanie w postaci tekstu – należy je zmieniać tylko wtedy, gdy wiadomo, co się robi.

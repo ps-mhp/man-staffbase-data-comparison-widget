@@ -11,7 +11,7 @@ Uma tabela: Na primeira coluna encontram-se as dimensões; ao lado de cada eleme
 - As linhas em que todos os elementos são iguais ficam em cinzento – as diferenças destacam-se.
 - No caso de números com preferência («Quanto mais alto, melhor» ou «Quanto mais baixo, melhor») e de avaliações, o melhor valor é destacado a cores e assinalado como «Melhor valor».
 - Uma **galeria** apresenta uma ou mais imagens por elemento. Os leitores podem percorrer a galeria com as setas; o botão no canto superior direito amplia a imagem para ocupar todo o ecrã. A galeria não faz comparações.
-- Se desejar, existe acima da tabela o botão **Apenas diferenças**, que oculta as linhas iguais.
+- Se desejar, existe acima da tabela o botão **Apenas diferenças**, que oculta as linhas idênticas.
 
 ## O que vê no editor do CMS
 

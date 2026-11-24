@@ -8,7 +8,7 @@
 4. Herhaal stap 3 voor elk kenmerk. De volgorde aan de rechterkant is de volgorde van de rijen; u kunt deze wijzigen met de pijltjes onder elke uitgeklapte dimensie.
 5. Links onder **Elementen**: klik op **Nieuw element** en voer in het midden de **naam** in (deze staat boven de kolom), eventueel een **ondertitel**.
 6. Voer in het midden onder **Waarden** voor elke dimensie de waarde van dit element in. Velden die u leeg laat, verschijnen op de pagina als „–“.
-7. Maak de overige elementen op dezelfde manier aan. De volgorde aan de linkerkant is de volgorde van de kolommen; versleep een element met het handvat naar een andere plek.
+7. Maak de overige elementen op dezelfde manier aan. De volgorde aan de linkerkant is de volgorde van de kolommen; sleep een element met het handvat naar een andere plek.
 8. Controleer het resultaat via **Desktop** en **Mobiel** bovenaan in het venster en klik op **Toepassen**. Sla de pagina vervolgens op of publiceer deze.
 
 ## Afbeeldingen toevoegen (galerij)

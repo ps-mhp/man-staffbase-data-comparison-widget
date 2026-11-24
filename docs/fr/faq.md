@@ -12,7 +12,7 @@ Réponse : À droite, sous **Dimensions**, développez la dimension mentionnée 
 
 Réponse : Une dimension de type **Sélection** nécessite au moins une option nommée. Développez la dimension et créez des options via **Ajouter une option**, ou supprimez les options vides.
 
-**Question :** Pourquoi l'éditeur affiche-t-il « Pas de nombre – la dernière valeur valide est enregistrée » ?
+**Question :** Pourquoi l’éditeur affiche-t-il « Pas de nombre – la dernière valeur valide est enregistrée » ?
 
 Réponse : Le champ numérique contient un élément qui n’est pas un nombre. Seuls les chiffres, une virgule ou un point comme séparateur décimal et un signe moins sont autorisés. L’unité doit être saisie dans la dimension, et non dans la valeur.
 

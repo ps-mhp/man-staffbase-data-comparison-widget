@@ -9,7 +9,7 @@
 5. On the left under **Elements**: Click **New Element** and enter the **Name** in the middle (it appears above the column), and optionally a **Subtitle**.
 6. In the center, under **Values**, enter the value for this element for each dimension. Fields you leave blank will appear as “–” on the page.
 7. Create the remaining elements in the same way. The order on the left corresponds to the order of the columns; drag an element by its handle to reposition it.
-8. Preview the result using **Desktop** and **Mobile** at the top of the window, then click **Apply**. Finally, save or publish the page.
+8. Review the result using **Desktop** and **Mobile** at the top of the window, then click **Apply**. Finally, save or publish the page.
 
 ## Adding Images (Gallery)
 

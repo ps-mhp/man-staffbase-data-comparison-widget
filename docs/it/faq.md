@@ -30,4 +30,4 @@ Risposta: Le righe in cui nessun elemento ha un valore vengono nascoste. Inseris
 
 **Domanda:** Ho cambiato il tipo di una dimensione e i valori sono scomparsi.
 
-Risposta: Durante la modifica, i valori vengono mantenuti per quanto possibile. Ciò che non corrisponde (ad es. Testo → Sì/No, se il testo non è né «Sì» né «No», oppure tutto da e verso la Galleria) viene omesso. Clicchi su **Annulla** finché non ha ancora chiuso la finestra.
+Risposta: Durante la modifica, i valori vengono mantenuti per quanto possibile. Ciò che non corrisponde (ad es. Testo → Sì/No, se il testo non è né «Sì» né «No», oppure tutto da e verso Galleria) viene omesso. Clicchi su **Annulla** finché non ha ancora chiuso la finestra.

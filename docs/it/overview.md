@@ -10,7 +10,7 @@ Una tabella: Nella prima colonna sono riportate le dimensioni, accanto alle qual
 
 - Le righe in cui tutti gli elementi sono uguali vengono sfocate in grigio: in questo modo le differenze risaltano.
 - Nel caso di numeri con una preferenza («Più alto è meglio» o «Più basso è meglio») e di valutazioni, il valore migliore è evidenziato a colori e contrassegnato come «Valore migliore».
-- Una **galleria** mostra una o più immagini per ciascun elemento. I lettori possono scorrere le immagini con le frecce; il pulsante in alto a destra ingrandisce l’immagine a schermo intero. La galleria non effettua alcun confronto.
+- Una **galleria** mostra una o più immagini per ciascun elemento. I lettori possono scorrere le immagini con le frecce; il pulsante in alto a destra ingrandisce l’immagine a tutto schermo. La galleria non effettua alcun confronto.
 - Se lo si desidera, sopra la tabella è presente il pulsante **Solo differenze**, che nasconde le righe identiche.
 
 ## Cosa vedete nell’editor CMS

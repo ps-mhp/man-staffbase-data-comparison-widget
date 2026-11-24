@@ -9,7 +9,7 @@
 5. À esquerda, em **Elementos**: clique em **Novo elemento** e introduza no centro o **nome** (que aparece acima da coluna) e, opcionalmente, um **subtítulo**.
 6. No centro, em **Valores**, introduza o valor deste elemento para cada dimensão. Os campos que deixar em branco aparecerão na página como «–».
 7. Crie os restantes elementos da mesma forma. A ordem à esquerda corresponde à ordem das colunas; arraste um elemento pela alça para o deslocar para outro local.
-8. Verifique o resultado através das opções **Desktop** e **Móvel**, na parte superior da janela, e clique em **Aplicar**. Em seguida, guarde ou publique a página.
+8. Verifique o resultado através de **Desktop** e **Móvel**, na parte superior da janela, e clique em **Aplicar**. Em seguida, guarde ou publique a página.
 
 ## Adicionar imagens (galeria)
 
@@ -22,8 +22,8 @@
 ## Alterar posteriormente
 
 1. Abra novamente as definições do widget.
-2. Para alterar uma dimensão, expanda-a à direita. Se alterar o **tipo**, os valores existentes serão mantidos, na medida do possível (por exemplo, Texto ↔ Lista, Texto → Seleção). O que não se encaixar será omitido – com **Anular**, pode reverter a alteração.
-3. Se eliminar uma dimensão, os seus valores desaparecerão em todos os elementos.
+2. Para alterar uma dimensão, expanda-a à direita. Se alterar o **tipo**, os valores existentes serão mantidos, na medida do possível (por exemplo, Texto ↔ Lista, Texto → Seleção). O que não se encaixar é eliminado – com **Anular**, pode reverter a alteração.
+3. Se eliminar uma dimensão, os seus valores desaparecem em todos os elementos.
 4. Clique em **Aplicar** e guarde a página.
 
 ## Se algo não funcionar

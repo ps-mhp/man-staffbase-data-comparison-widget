@@ -6,7 +6,7 @@ Cada dimensión tiene un tipo: texto, número con unidad, sí/no, lista, selecci
 
 ## Lo que ven los lectores
 
-Una tabla: En la primera columna figuran las dimensiones; junto a cada una de ellas, una columna con el nombre y un subtítulo opcional. Si hay muchos elementos, la tabla se puede desplazar horizontalmente; la primera columna permanece fija.
+Una tabla: En la primera columna figuran las dimensiones; junto a cada una de ellas, una columna con el nombre y un subtítulo opcional. Cuando hay muchos elementos, la tabla se puede desplazar horizontalmente; la primera columna permanece fija.
 
 - Las filas en las que todos los elementos son iguales aparecen en gris, lo que hace que las diferencias destaquen.
 - En el caso de los números con preferencia («cuanto más alto, mejor» o «cuanto más bajo, mejor») y de las valoraciones, el mejor valor aparece resaltado en color y marcado como «valor óptimo».
@@ -15,4 +15,4 @@ Una tabla: En la primera columna figuran las dimensiones; junto a cada una de el
 
 ## Lo que verá en el editor del CMS
 
-El cuadro de diálogo de configuración abre una gran ventana de edición: a la izquierda, los elementos; en el centro, los valores del elemento seleccionado; y a la derecha, las dimensiones, así como el diseño y el comportamiento. Mediante las opciones **Ordenador**, **Tableta** y **Móvil**, situadas en la parte superior de la ventana, podrá ver la tabla tal y como aparecerá en la página.
+El cuadro de diálogo de configuración abre una gran ventana de edición: a la izquierda, los elementos; en el centro, los valores del elemento seleccionado; a la derecha, las dimensiones, así como el diseño y el comportamiento. Mediante las opciones **Ordenador**, **Tableta** y **Móvil**, situadas en la parte superior de la ventana, podrá ver la tabla tal y como aparecerá en la página.
