@@ -22,7 +22,7 @@
 ## Modificar posteriormente
 
 1. Vuelve a abrir la configuración del widget.
-2. Para modificar una dimensión, despliégala por la derecha. Si cambias el **tipo**, se mantendrán los valores existentes en la medida de lo posible (p. ej., texto ↔ lista, texto → selección). Lo que no encaje se omite; con **Deshacer** puede recuperarlo.
+2. Para modificar una dimensión, despliégala a la derecha. Si cambias el **tipo**, se mantendrán los valores existentes en la medida de lo posible (p. ej., texto ↔ lista, texto → selección). Lo que no encaje se omite; con **Deshacer** puede recuperarlo.
 3. Si elimina una dimensión, sus valores desaparecerán de todos los elementos.
 4. Haga clic en **Aplicar** y guarde la página.
 

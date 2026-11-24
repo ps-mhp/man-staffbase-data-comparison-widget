@@ -1,6 +1,6 @@
 # Data Comparison
 
-The data comparison feature displays multiple items—such as vehicle models, trim levels, or offers—side by side and compares them based on a set of characteristics. You first specify **what** is being compared (the dimensions), and then enter the values for each item.
+The data comparison feature displays multiple items—such as vehicle models, trim levels, or offers—side by side and compares them based on a set of characteristics. You first define **what** is being compared (the dimensions), and then enter the values for each item.
 
 Each dimension has a type: text, number with unit, yes/no, list, selection from fixed options, star rating, or gallery. The type determines how the value is entered and displayed.
 
@@ -10,8 +10,8 @@ A table: The first column lists the dimensions, with a column next to it for eac
 
 - Rows where all elements are the same are grayed out—this makes the differences stand out.
 - For numbers with a preference (“Higher is better” or “Lower is better”) and for ratings, the best value is highlighted in color and marked as “Best Value.”
-- A **gallery** displays one or more images for each element. Readers can scroll through using the arrows; the frame button in the upper right enlarges the image to fill the screen. The gallery does not compare anything.
-- If desired, there is a **Only Differences** toggle above the table that hides identical rows.
+- A **gallery** displays one or more images for each element. Readers can scroll through the images using the arrows; the frame button in the upper right enlarges the image to fill the screen. The gallery does not compare anything.
+- If desired, the **Only Differences** toggle above the table hides identical rows.
 
 ## What You See in the CMS Editor
 

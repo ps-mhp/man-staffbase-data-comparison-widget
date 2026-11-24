@@ -4,7 +4,7 @@
 
 1. Sleep de widget **Gegevensvergelijking** naar de gewenste plek op de pagina. Deze neemt bij voorkeur de volledige breedte van het inhoudsgebied in beslag – in smalle kolommen moet er eerder worden gescrolld.
 2. Open de instellingen van de widget. Het venster **Vergelijking bewerken** wordt geopend.
-3. Rechts onder **Dimensies**: klik op **Nieuwe dimensie**, voer een **naam** in (bijv. „Prestatie“) en selecteer het **type** (bijv. „Getal“). Bij getallen vult u de **eenheid** in (bijv. „pk“) en stelt u onder **Beste waarde** vast of hogere of lagere waarden beter zijn.
+3. Rechts onder **Dimensies**: klik op **Nieuwe dimensie**, voer een **naam** in (bijv. „Prestatie“) en selecteer het **type** (bijv. „Getal“). Bij getallen vult u de **eenheid** in (bijv. „pk“) en stelt u onder **Beste waarde** in of hogere of lagere waarden beter zijn.
 4. Herhaal stap 3 voor elk kenmerk. De volgorde aan de rechterkant is de volgorde van de rijen; u kunt deze wijzigen met de pijltjes onder elke uitgeklapte dimensie.
 5. Links onder **Elementen**: klik op **Nieuw element** en voer in het midden de **naam** in (deze staat boven de kolom), eventueel een **ondertitel**.
 6. Voer in het midden onder **Waarden** voor elke dimensie de waarde van dit element in. Velden die u leeg laat, verschijnen op de pagina als „–“.

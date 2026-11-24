@@ -20,9 +20,9 @@ Risposta: Nel campo numerico è presente un carattere che non è un numero. Sono
 
 Risposta: Tutti gli elementi in quella riga hanno lo stesso valore. È possibile disattivare questa funzione in **Formattazione → Nascondi righe identiche**.
 
-**Domanda:** Perché non è evidenziato alcun valore migliore?
+**Domanda:** Perché nessun valore massimo è evidenziato?
 
-Risposta: I valori migliori vengono evidenziati solo per i numeri con **Valore migliore** "Più alto è meglio" o "Più basso è meglio" e nelle valutazioni – e solo se almeno due elementi hanno un valore e non sono tutti uguali. Inoltre, deve essere attiva l’opzione **Formattazione → Evidenzia valori migliori**.
+Risposta: I valori massimi vengono evidenziati solo per i numeri con **Valore massimo** "Più alto è meglio" o "Più basso è meglio" e nelle valutazioni – e solo se almeno due elementi hanno un valore e non sono tutti uguali. Inoltre, deve essere attiva l’opzione **Formattazione → Evidenzia valori migliori**.
 
 **Domanda:** Una dimensione non compare nella pagina.
 
