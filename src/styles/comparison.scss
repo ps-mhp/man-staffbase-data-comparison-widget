@@ -459,28 +459,50 @@ $accents: (
 
 // --- Galerie -------------------------------------------------------------------
 
+// Runde Knöpfe auf dem Bild. Staffbase gestaltet `button` im Inhaltsbereich
+// samt `:hover`, `:focus` und `:active` mit `!important` – nach dem Schließen
+// der Vergrößerung (Fokus kehrt zurück) wurde ein Pfeil so dunkel gefüllt und
+// sein Zeichen unsichtbar. Deshalb jeder Zustand ausdrücklich und nur über
+// `man-outshine-host` (siehe Aufrufer).
 @mixin round-button($size) {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: $size;
-  height: $size;
-  padding: 0;
-  margin: 0;
-  color: man("text");
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  width: $size !important;
+  min-width: 0 !important;
+  height: $size !important;
+  min-height: 0 !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  color: man("text") !important;
+  text-shadow: none !important;
   cursor: pointer;
-  background: rgba(255, 255, 255, 0.92);
-  border: 0;
-  border-radius: man("radius-round");
-  box-shadow: 0 1px 3px rgba(18, 27, 35, 0.3);
+  background: rgba(255, 255, 255, 0.92) !important;
+  border: 0 !important;
+  border-radius: man("radius-round") !important;
+  outline: none !important;
+  box-shadow: 0 1px 3px rgba(18, 27, 35, 0.3) !important;
+  appearance: none !important;
+  -webkit-tap-highlight-color: transparent;
 
-  &:hover {
-    background: man("white");
+  &:hover,
+  &:focus,
+  &:active {
+    color: man("text") !important;
+    background: man("white") !important;
+    border: 0 !important;
+    box-shadow: 0 1px 3px rgba(18, 27, 35, 0.3) !important;
   }
 
   &:focus-visible {
-    outline: man("focus-width") solid man("focus-color");
-    outline-offset: man("focus-offset");
+    outline: man("focus-width") solid man("focus-color") !important;
+    outline-offset: man("focus-offset") !important;
+  }
+
+  svg {
+    display: block;
+    flex: none;
+    color: inherit;
   }
 }
 
@@ -506,11 +528,13 @@ $accents: (
 }
 
 .man-cmp-gallery__nav {
-  @include round-button(32px);
-
+  // Mittig ohne `transform`: Staffbase verschiebt Knöpfe beim Drücken gern selbst.
   position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
+  top: calc(50% - 16px);
+
+  @include man-outshine-host {
+    @include round-button(32px);
+  }
 
   &--prev {
     left: man("space-2");
@@ -522,11 +546,13 @@ $accents: (
 }
 
 .man-cmp-gallery__enlarge {
-  @include round-button(32px);
-
   position: absolute;
   top: man("space-2");
   right: man("space-2");
+
+  @include man-outshine-host {
+    @include round-button(32px);
+  }
 }
 
 .man-cmp-gallery__count {
@@ -594,11 +620,12 @@ $accents: (
 }
 
 .man-cmp-lightbox__nav {
-  @include round-button(48px);
-
   position: fixed;
-  top: 50%;
-  transform: translateY(-50%);
+  top: calc(50% - 24px);
+
+  @include man-outshine-host {
+    @include round-button(48px);
+  }
 
   &--prev {
     left: man("space-4");
@@ -610,11 +637,13 @@ $accents: (
 }
 
 .man-cmp-lightbox__close {
-  @include round-button(44px);
-
   position: fixed;
   top: man("space-4");
   right: man("space-4");
+
+  @include man-outshine-host {
+    @include round-button(44px);
+  }
 }
 
 .man-cmp-lightbox__count {
@@ -634,6 +663,5 @@ $accents: (
   .man-cmp-lightbox__nav {
     top: auto;
     bottom: man("space-4");
-    transform: none;
   }
 }
