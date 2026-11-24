@@ -38,13 +38,15 @@ import {
   DEFAULT_NO_ICON,
   DEFAULT_YES_ICON,
   DIMENSION_TYPES,
+  MARK_SIZES,
+  MarkSize,
   Dimension,
   DimensionType,
   NUMBER_PREFERENCES,
   NumberPreference,
   newId,
 } from "../comparison-model";
-import { PREFERENCE_LABELS, TYPE_LABELS } from "./labels";
+import { MARK_SIZE_LABELS, PREFERENCE_LABELS, TYPE_LABELS } from "./labels";
 
 export interface DimensionFormProps {
   dimension: Dimension;
@@ -61,6 +63,8 @@ export interface DimensionFormProps {
   /** Eigene Farben anderer Dimensionen, zum erneuten Wählen. */
   recentColors: readonly string[];
 }
+
+const MARK_SIZE_OPTIONS: readonly SegmentedOption<MarkSize>[] = MARK_SIZES.map((id) => ({ id, label: MARK_SIZE_LABELS[id] }));
 
 const PREFERENCE_OPTIONS: readonly SegmentedOption<NumberPreference>[] = NUMBER_PREFERENCES.map((id) => ({
   id,
@@ -265,6 +269,13 @@ export function DimensionForm({
         <>
           <BoolSide dimension={dimension} side="yes" testId={testId} recentColors={recentColors} onChange={onChange} />
           <BoolSide dimension={dimension} side="no" testId={testId} recentColors={recentColors} onChange={onChange} />
+          <SegmentedField
+            label="Größe der Zeichen"
+            hint="Normal sind 20 × 20 px, kleiner 16, größer 24."
+            options={MARK_SIZE_OPTIONS}
+            value={dimension.markSize ?? "normal"}
+            onChange={(markSize) => onChange(markSize === "normal" ? { ...dimension, markSize: undefined } : { ...dimension, markSize })}
+          />
         </>
       )}
       {dimension.type === "choice" && (

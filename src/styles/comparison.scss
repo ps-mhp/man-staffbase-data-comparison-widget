@@ -357,12 +357,13 @@ $accents: (
 // Zwei Klassen: die Grundregel der Icons (`[data-man-icon]`, `icon-css.ts`)
 // steht im Stylesheet danach und gewönne bei gleicher Spezifität.
 .man-cmp__bool .man-cmp__bool-mark {
-  // Genau 20 × 20 px: Maske 1em groß, ohne das Geviert, das im Fließtext
+  // 20 × 20 px als Vorgabe: Maske 1em groß, ohne das Geviert, das im Fließtext
   // Unter- und Durchstreichung trägt.
+  // „Kleiner“/„Größer“ setzt `--cmp-bool-size` (16/24 px) am Wert.
   display: block;
-  width: 20px;
-  height: 20px;
-  font-size: 20px;
+  width: var(--cmp-bool-size, 20px);
+  height: var(--cmp-bool-size, 20px);
+  font-size: var(--cmp-bool-size, 20px);
   line-height: 0;
 
   &::before {

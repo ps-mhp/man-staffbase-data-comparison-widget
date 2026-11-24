@@ -65,6 +65,15 @@ describe("DimensionForm", () => {
     expect(h.latest().prefer).toBeUndefined();
   });
 
+  it("wählt die Größe der Ja/Nein-Zeichen", async () => {
+    const h = setup({ id: "b", label: "Diesel", type: "bool" });
+    expect(screen.getByRole("radio", { name: "Normal" })).toBeChecked();
+    await userEvent.click(screen.getByRole("radio", { name: "Größer" }));
+    expect(h.latest().markSize).toBe("large");
+    await userEvent.click(screen.getByRole("radio", { name: "Normal" }));
+    expect(h.latest().markSize).toBeUndefined();
+  });
+
   it("pflegt die Erläuterung", async () => {
     const h = setup({ id: "t", label: "Notiz", type: "text" });
     await userEvent.type(screen.getByTestId("cmp-dimension-1-hint"), "kurz");

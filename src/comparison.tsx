@@ -26,6 +26,7 @@ import {
   ComparisonItem,
   Dimension,
   GalleryImage,
+  MARK_SIZE_PX,
   MAX_RATING,
   boolIcons,
   hasContent,
@@ -75,8 +76,11 @@ function Empty(): React.ReactElement {
 function BoolValue({ value, dimension }: { value: boolean; dimension: Dimension }): React.ReactElement {
   const { yes, no } = boolIcons(dimension);
   const color = value ? dimension.yesColor : dimension.noColor;
-  // Als Variable, nicht als `color`: abgeblendete Zeilen dürfen sie weiter übersteuern.
-  const style = color === undefined ? undefined : ({ "--cmp-bool-color": color } as React.CSSProperties);
+  // Als Variablen, nicht als `color`: abgeblendete Zeilen dürfen die Farbe weiter übersteuern.
+  const style = {
+    ...(color === undefined ? {} : { "--cmp-bool-color": color }),
+    ...(dimension.markSize === undefined || dimension.markSize === "normal" ? {} : { "--cmp-bool-size": `${MARK_SIZE_PX[dimension.markSize]}px` }),
+  } as React.CSSProperties;
   return (
     <span className={value ? "man-cmp__bool man-cmp__bool--yes" : "man-cmp__bool man-cmp__bool--no"} style={style}>
       <Icon id={value ? yes : no} className="man-cmp__bool-mark" />

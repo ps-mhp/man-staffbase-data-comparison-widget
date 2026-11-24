@@ -82,6 +82,15 @@ describe("ComparisonTable", () => {
     expect((mark as HTMLElement).style.getPropertyValue("--cmp-bool-color")).toBe("#2d6300");
   });
 
+  it("setzt die Größe der Ja/Nein-Zeichen nur abweichend von Normal", () => {
+    const config = sampleConfig();
+    config.dimensions[3] = { ...config.dimensions[3]!, markSize: "small" };
+    const { container } = render(<ComparisonTable config={config} />);
+    const marks = within(rowOf("Klimaanlage")).getAllByRole("cell").map((cell) => cell.querySelector<HTMLElement>(".man-cmp__bool")!);
+    expect(marks[0]!.style.getPropertyValue("--cmp-bool-size")).toBe("16px");
+    expect(container.querySelector("style")!.textContent).toContain("width: var(--cmp-bool-size, 20px)");
+  });
+
   it("zentriert Werte, nur die Merkmale stehen links", () => {
     const { container } = render(<ComparisonTable config={sampleConfig()} />);
     const css = container.querySelector("style")!.textContent ?? "";

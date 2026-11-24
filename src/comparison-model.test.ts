@@ -323,6 +323,27 @@ describe("duplicateDimension", () => {
   });
 });
 
+describe("Größe der Ja/Nein-Zeichen", () => {
+  it("liest kleiner/größer, lässt Normal und Unbekanntes weg", () => {
+    const parsed = parseConfig(
+      JSON.stringify({
+        dimensions: [
+          { id: "a", label: "A", type: "bool", markSize: "large" },
+          { id: "b", label: "B", type: "bool", markSize: "normal" },
+          { id: "c", label: "C", type: "bool", markSize: "riesig" },
+          { id: "d", label: "D", type: "text", markSize: "small" },
+        ],
+      }),
+    );
+    expect(parsed.dimensions.map((dimension) => dimension.markSize)).toEqual(["large", undefined, undefined, undefined]);
+    expect(JSON.parse(serializeConfigJson({ ...parsed, dimensions: [{ id: "x", label: "X", type: "bool", markSize: "normal" }] })).dimensions[0]).toEqual({
+      id: "x",
+      label: "X",
+      type: "bool",
+    });
+  });
+});
+
 describe("Farben für Ja/Nein", () => {
   it("liest, normalisiert und schreibt eigene Farben nur bei Ja/Nein", () => {
     const parsed = parseConfig(

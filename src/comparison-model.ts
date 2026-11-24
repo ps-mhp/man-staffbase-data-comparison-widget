@@ -49,6 +49,13 @@ export type NumberPreference = "none" | "higher" | "lower";
 
 export const NUMBER_PREFERENCES: readonly NumberPreference[] = ["none", "higher", "lower"];
 
+/** Größe der Ja/Nein-Zeichen: „Kleiner“ 16, „Normal“ 20, „Größer“ 24 px. */
+export type MarkSize = "small" | "normal" | "large";
+
+export const MARK_SIZES: readonly MarkSize[] = ["small", "normal", "large"];
+
+export const MARK_SIZE_PX: Readonly<Record<MarkSize, number>> = { small: 16, normal: 20, large: 24 };
+
 /** Die Akzentfarbe im Rahmen der MAN-CI, wie bei der USP-Box. */
 export type ComparisonAccent = "red" | "grey" | "blue";
 
@@ -94,6 +101,8 @@ export interface Dimension {
   yesColor?: string;
   /** `bool`: Farbe für Nein (`#rrggbb`); Vorgabe gedämpftes Grau. */
   noColor?: string;
+  /** `bool`: Größe der Zeichen; Vorgabe `normal` (20 × 20 px). */
+  markSize?: MarkSize;
   /** `number`: Einheit hinter der Zahl, z. B. „kW“. */
   unit?: string;
   /** `number`: welche Zahl der Bestwert ist; Vorgabe `none`. */
@@ -279,6 +288,7 @@ function parseDimension(raw: unknown, index: number): Dimension | null {
     const noColor = normalizeHexColor(asText(raw.noColor));
     if (yesColor !== null) dimension.yesColor = yesColor;
     if (noColor !== null) dimension.noColor = noColor;
+    if (raw.markSize === "small" || raw.markSize === "large") dimension.markSize = raw.markSize;
   }
   if (type === "number") {
     const unit = asText(raw.unit);
@@ -375,6 +385,7 @@ function serializeDimension(dimension: Dimension): Record<string, unknown> {
     const noColor = normalizeHexColor(dimension.noColor);
     if (yesColor !== null) out.yesColor = yesColor;
     if (noColor !== null) out.noColor = noColor;
+    if (dimension.markSize !== undefined && dimension.markSize !== "normal") out.markSize = dimension.markSize;
   }
   if (dimension.type === "number") {
     if (dimension.unit !== undefined && dimension.unit.trim() !== "") out.unit = dimension.unit;
@@ -470,6 +481,7 @@ export function changeDimensionType(config: ComparisonConfig, dimensionId: strin
   if (from.noIcon !== undefined) to.noIcon = from.noIcon;
   if (from.yesColor !== undefined) to.yesColor = from.yesColor;
   if (from.noColor !== undefined) to.noColor = from.noColor;
+  if (from.markSize !== undefined) to.markSize = from.markSize;
   // Einheit und Vorzug reisen mit: Zahl → Text → Zahl soll sie nicht verlieren.
   // Gespeichert werden sie nur bei Zahlen (`serializeDimension`).
   if (from.unit !== undefined) to.unit = from.unit;

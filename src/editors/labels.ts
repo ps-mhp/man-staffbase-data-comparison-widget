@@ -13,7 +13,7 @@
 
 /** Die Namen der Typen, Vorzüge und Farben — für Inspektor, Liste und Formular. */
 
-import { ComparisonAccent, DimensionType, NumberPreference } from "../comparison-model";
+import { ComparisonAccent, DimensionType, MarkSize, NumberPreference } from "../comparison-model";
 
 export const TYPE_LABELS: Record<DimensionType, { title: string; hint: string }> = {
   text: { title: "Text", hint: "Freier Text; Zeilenumbrüche bleiben." },
@@ -29,6 +29,12 @@ export const PREFERENCE_LABELS: Record<NumberPreference, string> = {
   none: "Neutral",
   higher: "Höher ist besser",
   lower: "Niedriger ist besser",
+};
+
+export const MARK_SIZE_LABELS: Record<MarkSize, string> = {
+  small: "Kleiner",
+  normal: "Normal",
+  large: "Größer",
 };
 
 export const ACCENT_LABELS: Record<ComparisonAccent, { title: string; swatch: string }> = {
