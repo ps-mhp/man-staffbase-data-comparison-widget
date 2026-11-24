@@ -1,0 +1,27 @@
+{
+  "title": "Vergelijking van gegevens",
+  "summary": "Vergelijk producten, modellen of aanbiedingen per kolom op basis van zelfgekozen kenmerken – met een vaste eerste kolom, topkeuzes en een fotogalerij.",
+  "icon": "📊",
+  "pages": [
+    {
+      "id": "overview",
+      "title": "Overzicht",
+      "file": "overview.md"
+    },
+    {
+      "id": "usage",
+      "title": "Stap voor stap",
+      "file": "usage.md"
+    },
+    {
+      "id": "settings",
+      "title": "Instellingen",
+      "file": "settings.md"
+    },
+    {
+      "id": "faq",
+      "title": "Veelgestelde vragen",
+      "file": "faq.md"
+    }
+  ]
+}

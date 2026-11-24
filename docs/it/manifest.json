@@ -1,0 +1,27 @@
+{
+  "title": "Confronto dei dati",
+  "summary": "Confronta prodotti, modelli o offerte per colonne in base a caratteristiche definibili liberamente, con la prima colonna fissa, i valori migliori e una galleria di immagini.",
+  "icon": "📊",
+  "pages": [
+    {
+      "id": "overview",
+      "title": "Panoramica",
+      "file": "overview.md"
+    },
+    {
+      "id": "usage",
+      "title": "Passo dopo passo",
+      "file": "usage.md"
+    },
+    {
+      "id": "settings",
+      "title": "Impostazioni",
+      "file": "settings.md"
+    },
+    {
+      "id": "faq",
+      "title": "Domande frequenti",
+      "file": "faq.md"
+    }
+  ]
+}

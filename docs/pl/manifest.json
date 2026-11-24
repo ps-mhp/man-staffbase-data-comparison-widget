@@ -1,0 +1,27 @@
+{
+  "title": "Porównanie danych",
+  "summary": "Porównuj produkty, modele lub oferty w poszczególnych kolumnach według dowolnie wybranych cech – z stałą pierwszą kolumną, najlepszymi wynikami i galerią zdjęć.",
+  "icon": "📊",
+  "pages": [
+    {
+      "id": "overview",
+      "title": "Przegląd",
+      "file": "overview.md"
+    },
+    {
+      "id": "usage",
+      "title": "Krok po kroku",
+      "file": "usage.md"
+    },
+    {
+      "id": "settings",
+      "title": "Ustawienia",
+      "file": "settings.md"
+    },
+    {
+      "id": "faq",
+      "title": "Najczęściej zadawane pytania",
+      "file": "faq.md"
+    }
+  ]
+}

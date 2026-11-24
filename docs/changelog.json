@@ -1,0 +1,14 @@
+{
+  "versions": [
+    {
+      "version": "0.1.0-rc.1",
+      "date": "2026-11-24",
+      "entries": [
+        {
+          "type": "feat",
+          "text": "Datenvergleich-Widget"
+        }
+      ]
+    }
+  ]
+}

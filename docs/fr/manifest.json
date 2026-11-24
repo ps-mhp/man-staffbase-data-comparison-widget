@@ -1,0 +1,27 @@
+{
+  "title": "Comparaison des données",
+  "summary": "Comparez des produits, des modèles ou des offres colonne par colonne selon des critères que vous définissez librement – avec une première colonne fixe, les meilleures notes et une galerie d'images.",
+  "icon": "📊",
+  "pages": [
+    {
+      "id": "overview",
+      "title": "Aperçu",
+      "file": "overview.md"
+    },
+    {
+      "id": "usage",
+      "title": "Étape par étape",
+      "file": "usage.md"
+    },
+    {
+      "id": "settings",
+      "title": "Paramètres",
+      "file": "settings.md"
+    },
+    {
+      "id": "faq",
+      "title": "FAQ",
+      "file": "faq.md"
+    }
+  ]
+}
