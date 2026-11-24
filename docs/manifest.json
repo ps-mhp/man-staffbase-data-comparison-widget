@@ -1,0 +1,11 @@
+{
+  "title": "Datenvergleich",
+  "summary": "Vergleicht Produkte, Modelle oder Angebote spaltenweise über frei festgelegte Merkmale – mit stehender erster Spalte, Bestwerten und Bildergalerie.",
+  "icon": "📊",
+  "pages": [
+    { "id": "overview", "title": "Übersicht", "file": "overview.md" },
+    { "id": "usage", "title": "Schritt für Schritt", "file": "usage.md" },
+    { "id": "settings", "title": "Einstellungen", "file": "settings.md" },
+    { "id": "faq", "title": "FAQ", "file": "faq.md" }
+  ]
+}

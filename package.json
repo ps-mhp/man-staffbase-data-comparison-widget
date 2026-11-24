@@ -1,0 +1,11 @@
+{
+  "name": "@man/data-comparison-widget",
+  "version": "0.0.0",
+  "description": "Staffbase-Widget: Datenvergleich – Elemente spaltenweise über einen Satz Dimensionen vergleichen",
+  "author": "",
+  "license": "ISC",
+  "staffbase": {
+    "element": "data-comparison-widget",
+    "bundle": "dist/data-comparison-widget.js"
+  }
+}

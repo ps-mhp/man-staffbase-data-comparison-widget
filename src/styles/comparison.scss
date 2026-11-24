@@ -1,0 +1,638 @@
+/*!
+ * Copyright 2026, MHP Management und IT-Beratung GmbH and contributors.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+@use "sass:list";
+@use "@shared/stylings/man-tokens" as *;
+
+// Aufbau: Variablen (`--cmp-*`) am Wurzelelement, die Elemente lesen sie.
+// Was Staffbase im Inhaltsbereich mit `!important` einfärbt (`h3`, `p`, `li`,
+// `table`, `th`, `td`), wird über `man-outshine-host` durchgesetzt — siehe
+// `_man-tokens.scss`.
+
+// Rot und Anthrazit sind die Craft-Marke, Blau das Craft-Fokusblau; wie bei
+// der USP-Box (Akzent, dunkel, helle Fläche).
+$accents: (
+  "red": (man("red"), man("red-hover"), man("red-50")),
+  "grey": (man("slate"), man("slate-700"), man("slate-50")),
+  "blue": (#3875b2, man("info-ink"), #e3eef8),
+);
+
+.man-cmp {
+  --cmp-accent: #{man("red")};
+  --cmp-accent-strong: #{man("red-hover")};
+  --cmp-accent-soft: #{man("red-50")};
+  --cmp-dim-width: clamp(140px, 26%, 260px);
+  --cmp-column-min: 200px;
+  --cmp-cell-padding: #{man("space-3")} #{man("space-4")};
+  --cmp-border: #{man("border")};
+  --cmp-surface: #{man("surface")};
+  --cmp-sticky-surface: #{man("surface-sunken")};
+
+  box-sizing: border-box;
+  width: 100%;
+  font-family: man("font-body");
+  font-size: 16px;
+  line-height: 1.5;
+  color: man("text");
+
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+}
+
+@each $name, $colors in $accents {
+  .man-cmp[data-accent="#{$name}"] {
+    --cmp-accent: #{list.nth($colors, 1)};
+    --cmp-accent-strong: #{list.nth($colors, 2)};
+    --cmp-accent-soft: #{list.nth($colors, 3)};
+  }
+}
+
+// Schmal nach der eigenen Breite, nicht nach dem Fenster: `comparison.tsx`
+// setzt `data-narrow` per ResizeObserver. Kein Container Query — dessen
+// Größeneindämmung ließe den Block in einem schrumpfenden Elternteil auf 0
+// zusammenfallen.
+.man-cmp[data-narrow] {
+  .man-cmp__scroller {
+    --cmp-dim-width: 128px;
+    --cmp-column-min: 168px;
+    --cmp-cell-padding: #{man("space-2")} #{man("space-3")};
+  }
+}
+
+.man-cmp__sr {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+// --- Kopf ----------------------------------------------------------------------
+
+.man-cmp__head {
+  display: flex;
+  flex-wrap: wrap;
+  gap: man("space-3") man("space-5");
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: man("space-4");
+}
+
+.man-cmp__heading {
+  @include man-outshine-host {
+    margin: 0 !important;
+    padding: 0 !important;
+    font-family: man("font-head") !important;
+    font-size: 28px !important;
+    font-weight: 700 !important;
+    line-height: 1.2 !important;
+    text-transform: none !important;
+    letter-spacing: normal !important;
+    color: man("text") !important;
+    text-wrap: balance;
+  }
+}
+
+.man-cmp__toggle {
+  display: inline-flex;
+  gap: man("space-2");
+  align-items: center;
+  min-height: 40px;
+  padding: 0 man("space-2");
+  margin: 0;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 700;
+  color: man("text");
+  cursor: pointer;
+  background: none;
+  border: 0;
+
+  &:focus-visible {
+    outline: man("focus-width") solid man("focus-color");
+    outline-offset: man("focus-offset");
+  }
+}
+
+.man-cmp__toggle-track {
+  position: relative;
+  display: inline-block;
+  flex: none;
+  width: 36px;
+  height: 20px;
+  background: man("grey-300");
+  border-radius: man("radius-pill");
+  transition: background-color 150ms ease;
+
+  .man-cmp__toggle[aria-pressed="true"] & {
+    background: var(--cmp-accent);
+  }
+}
+
+.man-cmp__toggle-thumb {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 16px;
+  height: 16px;
+  background: man("white");
+  border-radius: man("radius-round");
+  transition: transform 150ms ease;
+
+  .man-cmp__toggle[aria-pressed="true"] & {
+    transform: translateX(16px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .man-cmp__toggle-track,
+  .man-cmp__toggle-thumb {
+    transition: none;
+  }
+}
+
+// --- Tabelle -------------------------------------------------------------------
+
+.man-cmp__scroller {
+  position: relative;
+  width: 100%;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  border-top: man("border-width-strong") solid var(--cmp-accent);
+
+  &:focus-visible {
+    outline: man("focus-width") solid man("focus-color");
+    outline-offset: man("focus-offset");
+  }
+}
+
+.man-cmp__table {
+  @include man-outshine-host {
+    // `separate`: mit `collapse` verlieren klebende Zellen in Safari ihre Ränder.
+    border-collapse: separate !important;
+    border-spacing: 0 !important;
+    width: 100% !important;
+    min-width: calc(var(--cmp-dim-width) + var(--cmp-columns, 1) * var(--cmp-column-min)) !important;
+    margin: 0 !important;
+    table-layout: fixed !important;
+    background: var(--cmp-surface) !important;
+    border: 0 !important;
+  }
+}
+
+// Gemeinsam für alle Zellen; einzeln, weil `man-outshine-host` nur einfache Klassen nimmt.
+@mixin cell {
+  padding: var(--cmp-cell-padding) !important;
+  font-family: man("font-body") !important;
+  font-size: 16px !important;
+  line-height: 1.5 !important;
+  color: var(--cmp-cell-color, #{man("text")}) !important;
+  text-align: left !important;
+  vertical-align: var(--cmp-cell-valign, top) !important;
+  overflow-wrap: anywhere;
+  background: var(--cmp-surface) !important;
+  border: 0 !important;
+  border-bottom: man("border-width") solid var(--cmp-border) !important;
+}
+
+// Die erste Spalte steht beim Scrollen still. Sie braucht eine deckende
+// Fläche, sonst schieben sich die Werte sichtbar darunter durch.
+@mixin sticky-cell {
+  position: sticky !important;
+  left: 0 !important;
+  z-index: 1;
+  width: var(--cmp-dim-width) !important;
+  background: var(--cmp-sticky-surface) !important;
+  box-shadow: var(--cmp-sticky-shadow, none);
+  transition: box-shadow 150ms ease;
+}
+
+.man-cmp__corner {
+  @include man-outshine-host {
+    @include cell;
+    @include sticky-cell;
+    border-bottom-color: man("border-strong") !important;
+  }
+}
+
+.man-cmp__item {
+  @include man-outshine-host {
+    @include cell;
+    width: auto !important;
+    vertical-align: bottom !important;
+    border-bottom: man("border-width-strong") solid man("border-strong") !important;
+  }
+}
+
+.man-cmp__dim {
+  @include man-outshine-host {
+    @include cell;
+    @include sticky-cell;
+    font-weight: 700 !important;
+    color: man("text") !important;
+  }
+}
+
+.man-cmp__cell {
+  @include man-outshine-host {
+    @include cell;
+  }
+}
+
+// Schatten an der Kante, sobald etwas darunter durchgescrollt ist. Über eine
+// Variable: die Zellregeln selbst stehen mit (0,5,0) und gewönnen sonst.
+.man-cmp__scroller[data-scrolled] {
+  --cmp-sticky-shadow: 6px 0 8px -6px rgba(18, 27, 35, 0.35);
+}
+
+.man-cmp__item-name,
+.man-cmp__dim-label {
+  display: block;
+}
+
+.man-cmp__item-name {
+  font-family: man("font-head");
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.man-cmp__item-subtitle,
+.man-cmp__dim-hint {
+  display: block;
+  margin-top: 2px;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.4;
+  color: man("text-muted");
+}
+
+// Zeilen ohne Unterschied treten zurück, damit die Unterschiede auffallen.
+.man-cmp__row--same {
+  --cmp-cell-color: #{man("text-muted")};
+}
+
+.man-cmp__row--same .man-cmp__bool--yes,
+.man-cmp__row--same .man-cmp__star--on {
+  color: man("text-muted");
+}
+
+.man-cmp__row--gallery {
+  --cmp-cell-valign: middle;
+}
+
+// --- Werte ---------------------------------------------------------------------
+
+.man-cmp__text {
+  @include man-outshine-host {
+    font: inherit !important;
+    color: inherit !important;
+
+    // Absätze und Aufzählungen aus dem Fließtext-Feld des Editors.
+    p,
+    ul,
+    li {
+      margin: 0 !important;
+      font: inherit !important;
+      color: inherit !important;
+    }
+
+    ul {
+      padding-left: 1.25em !important;
+      list-style: disc !important;
+    }
+
+    p + p,
+    p + ul,
+    ul + p {
+      margin-top: man("space-1") !important;
+    }
+  }
+}
+
+.man-cmp__number {
+  font-variant-numeric: tabular-nums;
+}
+
+.man-cmp__empty {
+  color: man("text-disabled");
+}
+
+.man-cmp__bool {
+  display: inline-flex;
+  align-items: center;
+}
+
+.man-cmp__bool--yes {
+  color: var(--cmp-accent);
+}
+
+.man-cmp__bool--no {
+  color: man("text-muted");
+}
+
+.man-cmp__bool-mark {
+  font-size: 22px;
+  line-height: 1;
+}
+
+// Icons der Bibliothek: Maske in Schriftfarbe, Größe über `font-size`
+// (`@shared/icons/icon-css.ts`). Staffbase färbt Spans im Inhalt nicht ein;
+// die Farbe erben sie vom Wert oder Kopf.
+.man-cmp__icon {
+  line-height: 1;
+}
+
+.man-cmp__dim-icon {
+  margin-right: 2px;
+  font-size: 18px;
+  color: var(--cmp-accent);
+}
+
+.man-cmp__item-icon {
+  display: block;
+  margin-bottom: man("space-2");
+  font-size: 28px;
+  color: var(--cmp-accent);
+}
+
+.man-cmp__list {
+  @include man-outshine-host {
+    padding: 0 !important;
+    margin: 0 !important;
+    list-style: none !important;
+  }
+}
+
+.man-cmp__list-item {
+  @include man-outshine-host {
+    position: relative !important;
+    padding: 0 0 0 man("space-4") !important;
+    margin: 0 0 2px !important;
+    font-size: 16px !important;
+    line-height: 1.5 !important;
+    color: inherit !important;
+    list-style: none !important;
+
+    &::before {
+      position: absolute;
+      top: 0.65em;
+      left: 2px;
+      width: 6px;
+      height: 6px;
+      content: "";
+      background: var(--cmp-accent);
+    }
+  }
+}
+
+.man-cmp__choice {
+  display: inline-block;
+  padding: 2px man("space-2");
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.4;
+  color: man("text");
+  background: man("surface-app");
+}
+
+.man-cmp__rating {
+  display: inline-flex;
+  gap: 1px;
+  font-size: 18px;
+  line-height: 1;
+  letter-spacing: 0;
+}
+
+.man-cmp__star {
+  color: man("grey-300");
+}
+
+.man-cmp__star--on {
+  color: var(--cmp-accent);
+}
+
+.man-cmp__cell--best {
+  @include man-outshine-host {
+    font-weight: 700 !important;
+    background: var(--cmp-accent-soft) !important;
+  }
+}
+
+.man-cmp__best {
+  display: block;
+  width: fit-content;
+  padding: 0 6px;
+  margin-top: man("space-1");
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 20px;
+  color: man("white");
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  background: var(--cmp-accent);
+}
+
+.man-cmp__note {
+  @include man-outshine-host {
+    margin: man("space-3") 0 0 !important;
+    font-size: 14px !important;
+    color: man("text-muted") !important;
+  }
+}
+
+// --- Galerie -------------------------------------------------------------------
+
+@mixin round-button($size) {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: $size;
+  height: $size;
+  padding: 0;
+  margin: 0;
+  color: man("text");
+  cursor: pointer;
+  background: rgba(255, 255, 255, 0.92);
+  border: 0;
+  border-radius: man("radius-round");
+  box-shadow: 0 1px 3px rgba(18, 27, 35, 0.3);
+
+  &:hover {
+    background: man("white");
+  }
+
+  &:focus-visible {
+    outline: man("focus-width") solid man("focus-color");
+    outline-offset: man("focus-offset");
+  }
+}
+
+.man-cmp-gallery {
+  position: relative;
+  width: 100%;
+}
+
+.man-cmp-gallery__frame {
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  background: man("surface-app");
+}
+
+.man-cmp-gallery__image {
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+  margin: 0 !important;
+  object-fit: cover;
+}
+
+.man-cmp-gallery__nav {
+  @include round-button(32px);
+
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+
+  &--prev {
+    left: man("space-2");
+  }
+
+  &--next {
+    right: man("space-2");
+  }
+}
+
+.man-cmp-gallery__enlarge {
+  @include round-button(32px);
+
+  position: absolute;
+  top: man("space-2");
+  right: man("space-2");
+}
+
+.man-cmp-gallery__count {
+  position: absolute;
+  bottom: man("space-2");
+  left: man("space-2");
+  padding: 0 6px;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 20px;
+  color: man("white");
+  background: rgba(18, 27, 35, 0.7);
+}
+
+// --- Vergrößerung --------------------------------------------------------------
+
+.man-cmp-lightbox {
+  width: 100vw;
+  max-width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  max-height: 100vh;
+  max-height: 100dvh;
+  padding: man("space-6") 72px;
+  overscroll-behavior: contain;
+  margin: 0;
+  color: man("white");
+  background: transparent;
+  border: 0;
+
+  &::backdrop {
+    background: rgba(18, 27, 35, 0.92);
+  }
+
+  &[open] {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+.man-cmp-lightbox__figure {
+  display: flex;
+  flex-direction: column;
+  gap: man("space-3");
+  align-items: center;
+  max-width: 100%;
+  max-height: 100%;
+  margin: 0;
+}
+
+.man-cmp-lightbox__image {
+  display: block;
+  max-width: 100%;
+  max-height: calc(100vh - 140px);
+  max-height: calc(100dvh - 140px);
+  object-fit: contain;
+}
+
+.man-cmp-lightbox__caption {
+  font-size: 14px;
+  line-height: 1.4;
+  color: man("grey-200");
+  text-align: center;
+}
+
+.man-cmp-lightbox__nav {
+  @include round-button(48px);
+
+  position: fixed;
+  top: 50%;
+  transform: translateY(-50%);
+
+  &--prev {
+    left: man("space-4");
+  }
+
+  &--next {
+    right: man("space-4");
+  }
+}
+
+.man-cmp-lightbox__close {
+  @include round-button(44px);
+
+  position: fixed;
+  top: man("space-4");
+  right: man("space-4");
+}
+
+.man-cmp-lightbox__count {
+  position: fixed;
+  top: man("space-5");
+  left: 50%;
+  font-size: 14px;
+  font-weight: 700;
+  transform: translateX(-50%);
+}
+
+@media (max-width: 600px) {
+  .man-cmp-lightbox {
+    padding: 64px man("space-2");
+  }
+
+  .man-cmp-lightbox__nav {
+    top: auto;
+    bottom: man("space-4");
+    transform: none;
+  }
+}
