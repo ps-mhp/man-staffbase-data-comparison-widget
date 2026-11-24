@@ -88,7 +88,9 @@ describe("ComparisonTable", () => {
     const { container } = render(<ComparisonTable config={config} />);
     const marks = within(rowOf("Klimaanlage")).getAllByRole("cell").map((cell) => cell.querySelector<HTMLElement>(".man-cmp__bool")!);
     expect(marks[0]!.style.getPropertyValue("--cmp-bool-size")).toBe("16px");
-    expect(container.querySelector("style")!.textContent).toContain("width: var(--cmp-bool-size, 20px)");
+    const css = container.querySelector("style")!.textContent ?? "";
+    expect(css).toContain("font-size: var(--cmp-bool-size, 20px)");
+    expect(css).toMatch(/\.man-cmp__bool \.man-cmp__bool-mark \{[^}]*width: 0\.5em;[^}]*height: 0\.5em;/);
   });
 
   it("lässt eine gewählte Ja/Nein-Farbe auch in abgeblendeten Zeilen stehen", () => {

@@ -271,7 +271,7 @@ export function DimensionForm({
           <BoolSide dimension={dimension} side="no" testId={testId} recentColors={recentColors} onChange={onChange} />
           <SegmentedField
             label="Größe der Zeichen"
-            hint="Normal sind 20 × 20 px, kleiner 16, größer 24."
+            hint="Normal ist die Vorgabe; Kleiner und Größer jeweils eine Stufe."
             options={MARK_SIZE_OPTIONS}
             value={dimension.markSize ?? "normal"}
             onChange={(markSize) => onChange(markSize === "normal" ? { ...dimension, markSize: undefined } : { ...dimension, markSize })}

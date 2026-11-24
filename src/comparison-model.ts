@@ -49,7 +49,7 @@ export type NumberPreference = "none" | "higher" | "lower";
 
 export const NUMBER_PREFERENCES: readonly NumberPreference[] = ["none", "higher", "lower"];
 
-/** Größe der Ja/Nein-Zeichen: „Kleiner“ 16, „Normal“ 20, „Größer“ 24 px. */
+/** Größe der Ja/Nein-Zeichen: Schriftgröße 16/20/24 px, das Zeichen ist .5em groß (8/10/12 px). */
 export type MarkSize = "small" | "normal" | "large";
 
 export const MARK_SIZES: readonly MarkSize[] = ["small", "normal", "large"];
@@ -101,7 +101,7 @@ export interface Dimension {
   yesColor?: string;
   /** `bool`: Farbe für Nein (`#rrggbb`); Vorgabe gedämpftes Grau. */
   noColor?: string;
-  /** `bool`: Größe der Zeichen; Vorgabe `normal` (20 × 20 px). */
+  /** `bool`: Größe der Zeichen; Vorgabe `normal` (.5em von 20 px = 10 × 10 px). */
   markSize?: MarkSize;
   /** `number`: Einheit hinter der Zahl, z. B. „kW“. */
   unit?: string;
